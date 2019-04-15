@@ -17,7 +17,7 @@ class WelcomeHome extends Component {
             </p>
           </div>
           <div className="col-md-6">
-            <h4 className="text-primary">Results Home!</h4>
+            <h4 className="text-primary">Saved Searches!</h4>
             <p className="lead">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
               dolorem at error vitae voluptate harum sequi accusantium soluta
