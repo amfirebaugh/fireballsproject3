@@ -9,9 +9,6 @@ import Profile from './pages/Profile';
 
 class App extends Component {
   render() {
-    {
-      /* must enclose top-level jsx with the browser router */
-    }
     return (
       <BrowserRouter>
         <div className="App">
