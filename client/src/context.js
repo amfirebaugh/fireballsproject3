@@ -26,10 +26,14 @@ export class MyProvider extends Component {
         age: 28,
         cool: 'true'
       }
-    ]
+    ],
+
+    drugname: '',
+
+    drugs: []
   };
 
-  // MyProvider component returns a context provider called 'MyProvoder'
+  // MyProvider component returns a context provider called 'MyProvider'
   // The 'value' is the props data that we wish to pass to our application's components
   // The value can be any data type however, for our application it is the contents of STATE
 

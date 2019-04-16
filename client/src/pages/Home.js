@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // context api wrapper to provide state to other components
 import { MyProvider } from '../context';
 import WelcomeHome from '../components/WelcomeHome';
+import NewSearch from '../components/NewSearch';
 import Results from '../components/Results';
 
 // import bootstrap from node_modules
@@ -17,6 +18,13 @@ class Home extends Component {
             <div className="row">
               <div className="col-md-12">
                 <WelcomeHome />
+              </div>
+            </div>
+          </div>
+          <div className="classname">
+            <div className="container">
+              <div className="col-md-12">
+                <NewSearch />
               </div>
             </div>
           </div>
