@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import API from '../utils/ApiCalls';
-import { Input, FormBtn } from '../components/Form';
+import { Input, FormBtn } from './Form';
+import DrugNameResults from './DrugNameResults';
 
 class NewSearch extends Component {
   //local state for now
@@ -21,15 +22,15 @@ class NewSearch extends Component {
     event.preventDefault();
     if (this.state.drugname) {
       API.getDrugNames({ drugname: this.state.drugname })
-        .then(res => this.setState({ drugs: res.data }))
+        .then(res =>
+          // setState includes a callback for console.log of state to see if I got the drugs
+          this.setState({ drugs: res.data }, () => {
+            console.log('local state is', this.state.drugs);
+          })
+        )
         .catch(err => console.log(err));
-
-      // data was successfully passed back and saved to local state,
-      // I need to figure out how to save in state as presented by the context api
-      // else I need to create a dumb component and pass the drugs [] as props
-      // do I need a lifecycle event?
     }
-    console.log('local state: ', this.state.drugs);
+    // I need to reset the form value submit
   };
 
   render() {
@@ -37,6 +38,7 @@ class NewSearch extends Component {
       <div className="container jumbotron">
         <div className="row">
           <div className="col-md-12">
+            <h3 className="mb-3 text-success">Drug Name Search</h3>
             <form>
               <Input
                 value={this.state.drugname}
@@ -53,6 +55,7 @@ class NewSearch extends Component {
             </form>
           </div>
         </div>
+        <DrugNameResults results={this.state.drugs} />
       </div>
     );
   }
