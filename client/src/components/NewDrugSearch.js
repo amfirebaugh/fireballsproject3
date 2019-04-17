@@ -61,7 +61,6 @@ class NewSearch extends Component {
             </form>
           </div>
         </div>
-        <DrugNameResults results={this.state.drugs} />
       </div>
     );
   }
