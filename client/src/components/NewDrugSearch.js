@@ -16,14 +16,6 @@ class NewSearch extends Component {
     this.setState({
       [name]: value
     });
-  };
-
-  handleFormSubmit = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-    // event.preventDefault();
     if (this.state.drugname) {
       API.getDrugNames({ drugname: this.state.drugname })
         .then(res =>
@@ -34,6 +26,10 @@ class NewSearch extends Component {
         )
         .catch(err => console.log(err));
     }
+  };
+
+  handleFormSubmit = event => {
+    event.preventDefault();
     // I need to reset the form value submit
   };
 
@@ -46,7 +42,7 @@ class NewSearch extends Component {
             <form>
               <Input
                 value={this.state.drugname}
-                onChange={this.handleFormSubmit}
+                onChange={this.handleInputChange}
                 name="drugname"
                 placeholder="drug name (required)"
                 list="drugs"
