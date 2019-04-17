@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import API from '../utils/ApiCalls';
-import { Input, FormBtn } from './Form';
+import { Input, FormBtn } from './FormDrugs';
 import DrugNameResults from './DrugNameResults';
 
 class NewSearch extends Component {
@@ -35,6 +35,7 @@ class NewSearch extends Component {
 
   render() {
     return (
+
       <div className="container jumbotron">
         <div className="row">
           <div className="col-md-12">
