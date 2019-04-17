@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import API from '../utils/ApiCalls';
-import { Input, FormBtn } from './Form';
+import { Input, FormBtn } from './FormDrugs';
 import DrugNameResults from './DrugNameResults';
 
 class NewSearch extends Component {
@@ -35,26 +35,23 @@ class NewSearch extends Component {
 
   render() {
     return (
-      <div className="container jumbotron">
-        <div className="row">
-          <div className="col-md-12">
-            <h3 className="mb-3 text-success">Drug Name Search</h3>
-            <form>
-              <Input
-                value={this.state.drugname}
-                onChange={this.handleInputChange}
-                name="drugname"
-                placeholder="drug name (required)"
-              />
-              <FormBtn
-                disabled={!this.state.drugname}
-                onClick={this.handleFormSubmit}
-              >
-                Submit Drug Search
-              </FormBtn>
-            </form>
-          </div>
-        </div>
+      <div className="jumbotron">
+        <h3 className="mb-3 text-success">Drug Name Search</h3>
+        <form>
+          <Input
+            value={this.state.drugname}
+            onChange={this.handleInputChange}
+            name="drugname"
+            placeholder="drug name (required)"
+          />
+          <FormBtn
+            disabled={!this.state.drugname}
+            onClick={this.handleFormSubmit}
+          >
+            Submit Drug Search
+          </FormBtn>
+        </form>
+
         <DrugNameResults results={this.state.drugs} />
       </div>
     );

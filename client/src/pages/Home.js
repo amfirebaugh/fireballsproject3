@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { MyProvider } from '../context';
 import WelcomeHome from '../components/WelcomeHome';
 import NewDrugSearch from '../components/NewDrugSearch';
+import InteractionSearch from '../components/InteractionSearch';
 import Results from '../components/Results';
+import { Footer } from '../components/Footer';
 
 // import bootstrap from node_modules
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,10 +23,17 @@ class Home extends Component {
               </div>
             </div>
           </div>
-          <div className="classname">
-            <div className="container">
+          <div className="container">
+            <div className="row">
               <div className="col-md-12">
                 <NewDrugSearch />
+              </div>
+            </div>
+          </div>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12">
+                <InteractionSearch />
               </div>
             </div>
           </div>
@@ -35,6 +44,7 @@ class Home extends Component {
               </div>
             </div>
           </div>
+          <Footer />
         </div>
       </MyProvider>
     );
