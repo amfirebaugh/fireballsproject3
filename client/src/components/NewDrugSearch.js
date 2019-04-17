@@ -19,7 +19,11 @@ class NewSearch extends Component {
   };
 
   handleFormSubmit = event => {
-    event.preventDefault();
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+    // event.preventDefault();
     if (this.state.drugname) {
       API.getDrugNames({ drugname: this.state.drugname })
         .then(res =>
@@ -42,10 +46,16 @@ class NewSearch extends Component {
             <form>
               <Input
                 value={this.state.drugname}
-                onChange={this.handleInputChange}
+                onChange={this.handleFormSubmit}
                 name="drugname"
                 placeholder="drug name (required)"
+                list="drugs"
               />
+              <datalist id="drugs">
+                {this.state.drugs.map(drug => (
+                  <option value={drug} key={drug} />
+                ))}
+              </datalist>
               <FormBtn
                 disabled={!this.state.drugname}
                 onClick={this.handleFormSubmit}
