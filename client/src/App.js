@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 // import pages
 import Home from './pages/Home';
 import Profile from './pages/Profile';
-import Callback from './components/Callback';
+import Callback from './Auth/Callback';
 
 // auth imports and components
 import AuthContext from './Auth/AuthContext';
@@ -45,9 +45,9 @@ class App extends Component {
             adding exact to '/' fixes this
           */}
             {/* <Redirect
-            path="/callback"
-            render={props => <Callback auth={auth} {...props} />}
-          /> */}
+              path="/callback"
+              render={props => <Callback auth={auth} {...props} />}
+            /> */}
             <Route exact path="/" component={Home} />
             <PrivateRoute exact path="/profile" component={Profile} />
             {/* 

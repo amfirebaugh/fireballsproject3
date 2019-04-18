@@ -24,7 +24,7 @@ export default class Auth {
     this.userEmail = null;
     this.userProfile = null;
 
-    this.requestedScopes = 'openid profile email read:courses';
+    this.requestedScopes = 'openid profile email';
     this.auth0 = new auth0.WebAuth({
       domain: process.env.REACT_APP_AUTH0_DOMAIN,
       clientID: process.env.REACT_APP_AUTH0_CLIENTID,

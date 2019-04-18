@@ -2,6 +2,10 @@
 import axios from 'axios';
 
 export default {
+  // getUsers
+
+  // saveUserInfo
+
   getDrugNames: function(query) {
     console.log('query for drug name', query);
     return axios.post('/api/getDrug', query);
