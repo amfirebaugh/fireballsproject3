@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import ApiCalls from '../utils/ApiCalls';
 
 class Profile extends Component {
   state = {
     profile: null,
-    email: null,
     error: ''
   };
 
@@ -16,6 +16,14 @@ class Profile extends Component {
       this.setState({ profile, error })
     );
   }
+
+  // this.props.
+
+  // ApiCalls.signInUser(profile)
+  // .then(response => {
+  //   console.log(response);
+  // })
+  // .catch(err => console.log(err));
 
   render() {
     const { profile } = this.state;

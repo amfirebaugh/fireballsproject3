@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use('/api', apiRoutes);
 
 // DERN???
-app.use(authRoutes);
+app.use('/api', authRoutes);
 
 // Send every other request to the React app
 // Define any API routes before this runs

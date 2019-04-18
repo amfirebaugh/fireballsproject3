@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 // import pages
 import Home from './pages/Home';
 import Profile from './pages/Profile';
-import Callback from './Auth/Callback';
+// import Callback from './Auth/Callback';
 
 // auth imports and components
 import AuthContext from './Auth/AuthContext';
@@ -14,6 +14,7 @@ import Auth from './Auth/Auth';
 import PrivateRoute from './Auth/PrivateRoute';
 
 class App extends Component {
+  // have to create new Auth() to have access to that class we created in Auth.js
   constructor(props) {
     super(props);
     this.state = {

@@ -1,5 +1,6 @@
+// this allows us access to all the auth0 API's and methods
 import auth0 from 'auth0-js';
-import React from 'react';
+import ApiCalls from '../utils/ApiCalls';
 // varialbes used for storing session in memory
 // eslint-disable-next-line
 let _idToken = null;
@@ -7,7 +8,7 @@ let _accessToken = null;
 let _scopes = null;
 let _expiresAt = null;
 
-// below in scope, the openid will expose: {
+// below in scope, the openid will give back the jwt: {
 // iss Issuer
 // sub Subject
 // aud Audience
@@ -19,12 +20,13 @@ let _expiresAt = null;
 // when the below method authorize() is called, it will redirect the browser to the Auth0 login page
 
 export default class Auth {
+  // in theory we're passing in history should allow us to interact with React Router's history so Auth can perform redirects...
   constructor(history) {
     this.history = history;
-    this.userEmail = null;
+    // this.userEmail = null;
     this.userProfile = null;
-
-    this.requestedScopes = 'openid profile email';
+    this.requestedScopes = 'openid profile email read:current_user';
+    // this initializes the necessary object, with its properties, below
     this.auth0 = new auth0.WebAuth({
       domain: process.env.REACT_APP_AUTH0_DOMAIN,
       clientID: process.env.REACT_APP_AUTH0_CLIENTID,
@@ -38,6 +40,7 @@ export default class Auth {
     this.auth0.authorize({
       redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL
     });
+
     // this.history.push('/profile');
   };
 
@@ -99,17 +102,17 @@ export default class Auth {
     });
   };
 
-  getEmail = cb => {
-    if (this.userEmail) {
-      return cb(this.userEmail);
-    }
-    this.auth0.client.userInfo(this.getAccessToken(), (err, email) => {
-      if (email) {
-        this.userEmail = email;
-        cb(email, err);
-      }
-    });
-  };
+  // getEmail = cb => {
+  //   if (this.userEmail) {
+  //     return cb(this.userEmail);
+  //   }
+  //   this.auth0.client.userInfo(this.getAccessToken(), (err, email) => {
+  //     if (email) {
+  //       this.userEmail = email;
+  //       cb(email, err);
+  //     }
+  //   });
+  // };
 
   // this function looks in localStorage for scopes, if there are none then it defaults to an empty string, then splits on that string, THEN iterates over each scope and returns true if every one of the scopes passed into the function are found within the scopes that are inside localStorage
   userHasScopes(scopes) {

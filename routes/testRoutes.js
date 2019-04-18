@@ -26,6 +26,12 @@ router.post('/getDrug', (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+router.post('/signInUser', function(req, resp) {
+  console.log(
+    'signInUser working from testRoutes testing testing even Anya needs foooood'
+  );
+});
+
 /* API CALL GET DRUG INTERACTION */
 router.post('/interaction', function(req, res) {
   let drugnames = Object.values(req.body);
