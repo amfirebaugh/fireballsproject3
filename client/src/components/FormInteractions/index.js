@@ -13,7 +13,7 @@ export function FormBtn(props) {
     <button
       {...props}
       style={{ float: 'right', marginBottom: 10 }}
-      className="btn btn-success"
+      className="btn rxGold"
     >
       {props.children}
     </button>

@@ -15,29 +15,31 @@ class Home extends Component {
     return (
       // Anything that needs access to the state data will need to be wrapped in the Provider Component.
       <MyProvider>
-        <div>
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <WelcomeHome />
+        <div className="rxGrey">
+          <div className="container mainWrap mt-5">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <WelcomeHome />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <InteractionSearch />
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <InteractionSearch />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <Results />
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <Results />
+                </div>
               </div>
             </div>
+            <Footer />
           </div>
-          <Footer />
         </div>
       </MyProvider>
     );

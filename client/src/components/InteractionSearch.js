@@ -83,10 +83,10 @@ class InteractionSearch extends Component {
 
   render() {
     return (
-      <div className="container jumbotron">
+      <div className="container jumbotron jBorder rxBlue">
         <div className="row">
           <div className="col-md-6">
-            <h4 className="mb-3 text-success">Drug Interaction Search</h4>
+            <h4 className="mb-3">Drug Interaction Search</h4>
             <form>
               <Input
                 value={this.state.drug1}
@@ -123,8 +123,8 @@ class InteractionSearch extends Component {
             </form>
           </div>
           <div className="col-md-6 pl-3">
-            <h4 className="text-primary">Saved Searches!</h4>
-            <ul>
+            <h4 className="rxBlue">Saved Searches!</h4>
+            <ul className="rxBlue">
               <li>Eye of Newt | Polyjuice Potion</li>
               <li>Caffiene | More Caffiene</li>
               <li>Mentos | Dr Pepper</li>

@@ -5,10 +5,10 @@ class WelcomeHome extends Component {
   render() {
     return (
       // the component that needs to utilize the state data is wrapped in the 'Consumer' component.
-      <div className="container jumbotron">
+      <div className="container jumbotron jBorder rxBlue mt-3">
         <div className="row">
           <div className="col-md-12">
-            <h4 className="text-success">Welcome Home!</h4>
+            <h4>Welcome Home!</h4>
             <p className="lead">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
               dolorem at error vitae voluptate harum sequi accusantium soluta
