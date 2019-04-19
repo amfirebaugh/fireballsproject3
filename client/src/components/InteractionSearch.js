@@ -8,27 +8,62 @@ class InteractionSearch extends Component {
   state = {
     drug1: '',
     drug2: '',
+    drugSuggestions: [],
     interactions: []
   };
 
-  // this works
-  handleInputChange = event => {
+  handleInputChangeSuggestions1 = event => {
     const { name, value } = event.target;
-    this.setState(
-      {
-        [name]: value
-      },
-      () => {
-        console.log(
-          'this drug1 and this drug2 are:',
-          this.state.drug1,
-          this.state.drug2
-        );
-      }
-    );
+    this.setState({
+      [name]: value
+    });
+    if (this.state.drug1) {
+      API.getDrugNames({ drug1: this.state.drug1 })
+        .then(res =>
+          // setState includes a callback for console.log of state to see if I got the drugs
+          this.setState({ drugSuggestions: res.data }, () => {
+            console.log('local state is', this.state.drugSuggestions);
+          })
+        )
+        .catch(err => console.log(err));
+    }
   };
 
-  handleFormSubmit = event => {
+  handleInputChangeSuggestions2 = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+    if (this.state.drug2) {
+      API.getDrugNames({ drug2: this.state.drug2 })
+        .then(res =>
+          // setState includes a callback for console.log of state to see if I got the drugs
+          this.setState({ drugSuggestions: res.data }, () => {
+            console.log('local state is', this.state.drugSuggestions);
+          })
+        )
+        .catch(err => console.log(err));
+    }
+  };
+
+  // this works
+  // handleInputChangeInteraction = event => {
+  //   const { name, value } = event.target;
+  //   this.setState(
+  //     {
+  //       [name]: value
+  //     },
+  //     () => {
+  //       console.log(
+  //         'this drug1 and this drug2 are:',
+  //         this.state.drug1,
+  //         this.state.drug2
+  //       );
+  //     }
+  //   );
+  // };
+
+  handleFormSubmitInteraction = event => {
     event.preventDefault();
     if (this.state.drug1 && this.state.drug2) {
       API.getDrugInteractions({
@@ -55,19 +90,33 @@ class InteractionSearch extends Component {
             <form>
               <Input
                 value={this.state.drug1}
-                onChange={this.handleInputChange}
+                // onChange={this.handleInputChangeInteraction}
+                onChange={this.handleInputChangeSuggestions1}
                 name="drug1"
                 placeholder="drug name 1 (required)"
+                list="drugs1"
               />
+              <datalist id="drugs1">
+                {this.state.drugSuggestions.map(drug => (
+                  <option value={drug} key={drug} />
+                ))}
+              </datalist>
               <Input
                 value={this.state.drug2}
-                onChange={this.handleInputChange}
+                // onChange={this.handleInputChangeInteraction}
+                onChange={this.handleInputChangeSuggestions2}
                 name="drug2"
                 placeholder="drug name 2 (required)"
+                list="drugs2"
               />
+              <datalist id="drugs2">
+                {this.state.drugSuggestions.map(drug => (
+                  <option value={drug} key={drug} />
+                ))}
+              </datalist>
               <FormBtn
                 disabled={!this.state.drug1 || !this.state.drug2}
-                onClick={this.handleFormSubmit}
+                onClick={this.handleFormSubmitInteraction}
               >
                 Submit Interaction Search
               </FormBtn>
