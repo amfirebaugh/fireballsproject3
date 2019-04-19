@@ -3,6 +3,9 @@ const path = require('path');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+// mongo additions
+const mongoose = require('mongoose');
+
 const apiRoutes = require('./routes/testRoutes');
 
 // Define middleware here
@@ -22,6 +25,25 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './client/build/index.html'));
 });
 
+// mongo DB connection
+mongoose.connect('mongodb://localhost/drugRX', { useNewUrlParser: true });
+
+// test connection via callback
+/* once => listen one time
+on => listen everytime
+*/
+mongoose.connection
+  .once('open', function() {
+    console.log('connection made!!!!');
+    // lets mocha know connection is done
+    done();
+  })
+  .on('error', function(error) {
+    console.log('connection error: make sure mongo is running!!!');
+  });
+// end DB connection
+
+// Start Server
 app.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
 });
