@@ -31,9 +31,4 @@ router.get('/users', checkJwt, function(req, resp) {
   // Here we want to pass up the Users to the front end so the profile page can handle other routes below
 });
 
-router.post('/signInUser', function(req, resp) {
-  console.log('signInUser server side Anya is the best' + req.body);
-  resp.send(200);
-});
-
 module.exports = router;

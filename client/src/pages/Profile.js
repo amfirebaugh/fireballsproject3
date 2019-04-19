@@ -13,17 +13,16 @@ class Profile extends Component {
 
   loadUserProfile() {
     this.props.auth.getProfile((profile, error) =>
-      this.setState({ profile, error })
+      //this.setState({ profile, error })
+      ApiCalls.signInUser(profile)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(err => console.log(err))
     );
   }
 
   // this.props.
-
-  // ApiCalls.signInUser(profile)
-  // .then(response => {
-  //   console.log(response);
-  // })
-  // .catch(err => console.log(err));
 
   render() {
     const { profile } = this.state;
