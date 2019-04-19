@@ -11,7 +11,7 @@ class NewSearch extends Component {
   };
 
   // this works
-  handleInputChange = event => {
+  handleInputChangeXX = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
@@ -35,7 +35,6 @@ class NewSearch extends Component {
 
   render() {
     return (
-
       <div className="container jumbotron">
         <div className="row">
           <div className="col-md-12">
@@ -43,7 +42,7 @@ class NewSearch extends Component {
             <form>
               <Input
                 value={this.state.drugname}
-                onChange={this.handleInputChange}
+                onChange={this.handleInputChangeXX}
                 name="drugname"
                 placeholder="drug name (required)"
                 list="drugs"

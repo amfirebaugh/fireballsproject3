@@ -26,13 +26,6 @@ class Home extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <NewDrugSearch />
-              </div>
-            </div>
-          </div>
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
                 <InteractionSearch />
               </div>
             </div>
