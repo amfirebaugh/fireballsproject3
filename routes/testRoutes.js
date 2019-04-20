@@ -26,15 +26,6 @@ router.post('/getDrug', (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-router.post('/signInUser', function(req, resp) {
-  console.log(
-    'signInUser server side Anya is the best' + JSON.stringify(req.body)
-  );
-  // connect to DB
-  // DB. check for repeat emails and handle accordingly (if I want to...)
-  resp.sendStatus(200);
-});
-
 /* API CALL GET DRUG INTERACTION */
 router.post('/interaction', function(req, res) {
   let drugnames = Object.values(req.body);

@@ -25,10 +25,21 @@ const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
+// not using yet
 router.get('/users', checkJwt, function(req, resp) {
   resp.send('User is logged in. JWT is checked.');
   console.log('jwt is:' + jwt);
   // Here we want to pass up the Users to the front end so the profile page can handle other routes below
+});
+
+// right now returns user profile to console log
+router.post('/signInUser', function(req, resp) {
+  console.log(
+    'signInUser server side Anya is the best' + JSON.stringify(req.body)
+  );
+  // connect to DB
+  // DB. check for repeat emails and handle accordingly (if I want to...)
+  resp.sendStatus(200);
 });
 
 module.exports = router;

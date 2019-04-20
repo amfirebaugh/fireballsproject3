@@ -22,8 +22,6 @@ class Profile extends Component {
     );
   }
 
-  // this.props.
-
   render() {
     const { profile } = this.state;
     if (!profile) {

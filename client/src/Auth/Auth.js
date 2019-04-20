@@ -1,6 +1,6 @@
 // this allows us access to all the auth0 API's and methods
 import auth0 from 'auth0-js';
-import ApiCalls from '../utils/ApiCalls';
+// import ApiCalls from '../utils/ApiCalls';
 // varialbes used for storing session in memory
 // eslint-disable-next-line
 let _idToken = null;
