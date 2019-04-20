@@ -20,18 +20,6 @@ const Header = props => {
           </a>
           <div>
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <Link to="/" className="nav-link">
-                  Home
-                </Link>
-              </li>
-              {isAuthenticated() && (
-                <li className="nav-item">
-                  <Link to="/profile" className="nav-link">
-                    View Profile
-                  </Link>
-                </li>
-              )}
               <li>
                 <button onClick={isAuthenticated() ? logout : login}>
                   {isAuthenticated() ? 'Logout' : 'Login'}

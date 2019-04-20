@@ -5,8 +5,8 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 // import pages
 import Home from './pages/Home';
-import Profile from './pages/Profile';
-// import Callback from './Auth/Callback';
+import Login from './pages/Login';
+import Callback from './Auth/Callback';
 
 // auth imports and components
 import AuthContext from './Auth/AuthContext';
@@ -45,12 +45,13 @@ class App extends Component {
             ** However **
             adding exact to '/' fixes this
           */}
-            {/* <Redirect
+            <Route exact path="/" component={Login} />
+            <Route
               path="/callback"
-              render={props => <Callback auth={auth} {...props} />}
-            /> */}
-            <Route exact path="/" component={Home} />
-            <PrivateRoute exact path="/profile" component={Profile} />
+              render={props => <Home auth={auth} {...props} />}
+            />
+            {/* <PrivateRoute exact path="/home" component={Home} /> */}
+            {/* <PrivateRoute exact path="/profile" component={Profile} /> */}
             {/* 
             Profile is a placeholder route until we get auth ironed out 
             <Route exact path="/Profile" Component={Profile} /> 
