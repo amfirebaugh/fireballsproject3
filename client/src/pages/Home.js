@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 // context api wrapper to provide state to other components
 import { MyProvider } from '../context';
 import WelcomeHome from '../components/WelcomeHome';
-import NewDrugSearch from '../components/NewDrugSearch';
 import InteractionSearch from '../components/InteractionSearch';
 import Results from '../components/Results';
 import { Footer } from '../components/Footer';

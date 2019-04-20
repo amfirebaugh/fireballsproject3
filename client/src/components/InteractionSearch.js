@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import API from '../utils/ApiCalls';
-import { Input, FormBtn } from './FormInteractions';
+import { Input, FormBtn, SelectGender, SelectAge } from './FormInteractions';
 //import InteractionResults from './InteractionResults';
 
 class InteractionSearch extends Component {
@@ -9,7 +9,34 @@ class InteractionSearch extends Component {
     drug1: '',
     drug2: '',
     drugSuggestions: [],
-    interactions: []
+    interactions: [],
+    ageOptions: [
+      '0-1',
+      '2-9',
+      '10-19',
+      '20-29',
+      '30-39',
+      '40-49',
+      '50-59',
+      '60+'
+    ],
+    age: '',
+    genderOptions: ['male', 'female'],
+    sex: ''
+  };
+
+  handleInputSex = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleInputAge = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
   };
 
   handleInputChangeSuggestions1 = event => {
@@ -46,23 +73,6 @@ class InteractionSearch extends Component {
     }
   };
 
-  // this works
-  // handleInputChangeInteraction = event => {
-  //   const { name, value } = event.target;
-  //   this.setState(
-  //     {
-  //       [name]: value
-  //     },
-  //     () => {
-  //       console.log(
-  //         'this drug1 and this drug2 are:',
-  //         this.state.drug1,
-  //         this.state.drug2
-  //       );
-  //     }
-  //   );
-  // };
-
   handleFormSubmitInteraction = event => {
     event.preventDefault();
     if (this.state.drug1 && this.state.drug2) {
@@ -88,9 +98,22 @@ class InteractionSearch extends Component {
           <div className="col-md-6">
             <h4 className="mb-3">Drug Interaction Search</h4>
             <form>
+              <SelectGender
+                value={this.state.sex}
+                handleChangeSex={this.handleInputSex}
+                name={'sex'}
+                placeholder={'select sex (required)'}
+                options={this.state.genderOptions}
+              />
+              <SelectAge
+                value={this.state.age}
+                handleChangeAge={this.handleInputAge}
+                name={'age'}
+                placeholder={'select age range (required)'}
+                options={this.state.ageOptions}
+              />
               <Input
                 value={this.state.drug1}
-                // onChange={this.handleInputChangeInteraction}
                 onChange={this.handleInputChangeSuggestions1}
                 name="drug1"
                 placeholder="drug name 1 (required)"
@@ -103,7 +126,6 @@ class InteractionSearch extends Component {
               </datalist>
               <Input
                 value={this.state.drug2}
-                // onChange={this.handleInputChangeInteraction}
                 onChange={this.handleInputChangeSuggestions2}
                 name="drug2"
                 placeholder="drug name 2 (required)"
