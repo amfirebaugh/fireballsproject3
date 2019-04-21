@@ -139,7 +139,7 @@ router.post('/interaction', function(req, res) {
     })
     .catch(function(err) {
       console.log('there is an error', err);
-      res.send('500 Error');
+      res.json('500');
     }); // END INTERACTION API
 });
 
