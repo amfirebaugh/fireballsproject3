@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import API from '../utils/ApiCalls';
 import { Input, FormBtn, SelectGender, SelectAge } from './FormInteractions';
-//import InteractionResults from './InteractionResults';
+import { InteractionResultsB } from '../components/InteractionResultsB';
 
 class InteractionSearch extends Component {
   //local state for now
@@ -83,7 +83,7 @@ class InteractionSearch extends Component {
         .then(res =>
           // setState includes a callback for console.log of state to see if I got the drugs
           this.setState({ interactions: res.data }, () => {
-            console.log('local state is', this.state.interactions);
+            console.log('local interactions are', this.state.interactions);
           })
         )
         .catch(err => console.log(err));
@@ -153,6 +153,9 @@ class InteractionSearch extends Component {
             </ul>
           </div>
         </div>
+        {this.state.interactions.length > 0 ? (
+          <InteractionResultsB interactions_results={this.state.interactions} />
+        ) : null}
       </div>
     );
   }

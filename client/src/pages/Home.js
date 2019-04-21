@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { MyProvider } from '../context';
 import WelcomeHome from '../components/WelcomeHome';
 import InteractionSearch from '../components/InteractionSearch';
-import Results from '../components/Results';
 import { Footer } from '../components/Footer';
 
 // import bootstrap from node_modules
@@ -32,9 +31,7 @@ class Home extends Component {
             </div>
             <div className="container">
               <div className="row">
-                <div className="col-md-12">
-                  <Results />
-                </div>
+                <div className="col-md-12" />
               </div>
             </div>
             <Footer />

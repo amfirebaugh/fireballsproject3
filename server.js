@@ -36,7 +36,7 @@ mongoose.connection
   .once('open', function() {
     console.log('connection made!!!!');
     // lets mocha know connection is done
-    done();
+    // done();
   })
   .on('error', function(error) {
     console.log('connection error: make sure mongo is running!!!');
