@@ -8,12 +8,58 @@ export function Input(props) {
   );
 }
 
+export function SelectGender(props) {
+  return (
+    <div className="form-group">
+      <select
+        name={props.name}
+        value={props.value}
+        onChange={props.handleChangeSex}
+      >
+        <option value="" disabled>
+          {props.placeholder}
+        </option>
+        {props.options.map(option => {
+          return (
+            <option key={option} value={option} label={option}>
+              {option}
+            </option>
+          );
+        })}
+      </select>
+    </div>
+  );
+}
+
+export function SelectAge(props) {
+  return (
+    <div className="form-group">
+      <select
+        name={props.name}
+        value={props.value}
+        onChange={props.handleChangeAge}
+      >
+        <option value="" disabled>
+          {props.placeholder}
+        </option>
+        {props.options.map(option => {
+          return (
+            <option key={option} value={option} label={option}>
+              {option}
+            </option>
+          );
+        })}
+      </select>
+    </div>
+  );
+}
+
 export function FormBtn(props) {
   return (
     <button
       {...props}
       style={{ float: 'right', marginBottom: 10 }}
-      className="btn btn-success"
+      className="btn rxGold"
     >
       {props.children}
     </button>

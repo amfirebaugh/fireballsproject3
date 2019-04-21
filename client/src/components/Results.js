@@ -11,10 +11,8 @@ class Results extends Component {
           const { people } = value;
           console.log('people are :', people[0]);
           return (
-            <div className="jumbotron">
-              <h4 className="text-warning">
-                Search Results from state using context api
-              </h4>
+            <div className="jumbotron jBorder rxBlue">
+              <h4>Search Results from state using context api</h4>
               {people.map(person => (
                 <ul key={person.id}>
                   <li>{person.name}</li>

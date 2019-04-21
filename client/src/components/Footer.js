@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Footer(props) {
   return (
-    <div className="container">
+    <div className="container mb-3">
       <div className="row">
         <div className="col-md-12">
           <p className="text-center small m-2 p-2">

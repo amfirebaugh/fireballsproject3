@@ -2,6 +2,7 @@
 
 body {
   color: white;
+  background-color: #fcbe05;
 }
 
 .rxFooterLinks {
@@ -38,8 +39,37 @@ body {
   max-height: 100px;
 }
 
-.userTypeBtn {
+.rxBlue {
+  color: #00485e;
+}
+
+.rxGold {
   background-color: #fcbe05;
+}
+
+.rxGrey {
+  background-color: #00a88f;
+  /* background-image: url('./images/pills.jpg'); */
+  background-size: cover;
+  background-position: center;
+  border-top: double 4px #00485e;
+}
+
+.mainWrap {
+  /*border: double 4px #00485e;
+  background-color: #e0e0e0;
+  background-color: #b3e5fc;*/
+}
+
+.jBorder {
+  border-bottom: solid 2px #00485e;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
 }
 
 /* New User Page */

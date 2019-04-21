@@ -35,6 +35,7 @@ router.post('/interaction', function(req, res) {
   console.log(drugnames);
   // need to get age and sex from user table
   // This array is initialized as empty but will be filled in with the symptoms that are common to both the user's age and gender
+  
   let mostLikelySymptoms = '';
   let otherPossibleSymptoms = '';
   let symptomResponseArr = [];
@@ -62,85 +63,84 @@ router.post('/interaction', function(req, res) {
     '/' +
     drugnames[1] +
     '/';
-  axios.get(queryUrl).then(function(response) {
-    console.log(response.data);
-    res.json(response.data);
-  });
-  //try {
-  //
-  // ** Erik's magic parser **
-  //
-  // response tested as functional using 'zoloft' and 'acetaminophen'
-  // console.log('age is',age)
-  // console.log('gender is',gender)
-  // test = response;
-  // //console.log('test is', test.data.age_interaction)
-  // for (var i = 0; i < test.data.age_interaction[age].length; i++) {
-  //   for (
-  //     var j = 0;
-  //     j < test.data.gender_interaction[gender].length;
-  //     j++
-  //   ) {
-  //     if (
-  //       test.data.age_interaction[age][i] ===
-  //       test.data.gender_interaction[gender][j]
-  //     ) {
-  //       mostLikelySymptoms += test.data.age_interaction[age][i] + ' || ';
-  //             }
-  //           }
-  //         }
-  //         //console.log('most likey symptoms', mostLikelySymptoms);
-  //         symptomResponseArr.push(mostLikelySymptoms);
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-  //     })
-  //     .then(function() {
-  //       try {
-  //         for (var i = 0; i < test.data.age_interaction[age].length; i++) {
-  //           for (var j = 0; j < mostLikelySymptoms.length; j++) {
-  //             if (test.data.age_interaction[age][i] !== mostLikelySymptoms[j]) {
-  //               if (
-  //                 !otherPossibleSymptoms.includes(
-  //                   test.data.age_interaction[age][i]
-  //                 )
-  //               ) {
-  //                 otherPossibleSymptoms +=
-  //                   test.data.age_interaction[age][i] + ' || ';
-  //               }
-  //             }
-  //           }
-  //         }
-  //         for (var i = 0; i < test.data.gender_interaction[gender].length; i++) {
-  //           for (var j = 0; j < mostLikelySymptoms.length; j++) {
-  //             if (
-  //               test.data.gender_interaction[gender][i] !== mostLikelySymptoms[j]
-  //             ) {
-  //               if (
-  //                 !otherPossibleSymptoms.includes(
-  //                   test.data.gender_interaction[gender][i]
-  //                 )
-  //               ) {
-  //                 otherPossibleSymptoms +=
-  //                   test.data.gender_interaction[gender][i] + ' || ';
-  //               }
-  //             }
-  //           }
-  //         }
-  //         //console.log('other possible symptoms', otherPossibleSymptoms);
-  //         symptomResponseArr.push(otherPossibleSymptoms);
-  //         console.log('Array', symptomResponseArr);
+  
+  axios
+    .get(queryUrl)
+    .then(function(response) {
+      console.log(response.data);
+      // if response object is empty we need to display 'no results'
+      res.json(response.data);
+      try {
+        console.log('age is', age);
+        console.log('gender is', gender);
+        test = response;
+        //console.log('test is', test.data.age_interaction)
+        for (var i = 0; i < test.data.age_interaction[age].length; i++) {
+          for (
+            var j = 0;
+            j < test.data.gender_interaction[gender].length;
+            j++
+          ) {
+            if (
+              test.data.age_interaction[age][i] ===
+              test.data.gender_interaction[gender][j]
+            ) {
+              mostLikelySymptoms += test.data.age_interaction[age][i] + ' || ';
+            }
+          }
+        }
+        //console.log('most likey symptoms', mostLikelySymptoms);
+        symptomResponseArr.push(mostLikelySymptoms);
+      } catch (err) {
+        console.log(err);
+      }
+    })
+    .then(function() {
+      try {
+        for (var i = 0; i < test.data.age_interaction[age].length; i++) {
+          for (var j = 0; j < mostLikelySymptoms.length; j++) {
+            if (test.data.age_interaction[age][i] !== mostLikelySymptoms[j]) {
+              if (
+                !otherPossibleSymptoms.includes(
+                  test.data.age_interaction[age][i]
+                )
+              ) {
+                otherPossibleSymptoms +=
+                  test.data.age_interaction[age][i] + ' || ';
+              }
+            }
+          }
+        }
+        for (var i = 0; i < test.data.gender_interaction[gender].length; i++) {
+          for (var j = 0; j < mostLikelySymptoms.length; j++) {
+            if (
+              test.data.gender_interaction[gender][i] !== mostLikelySymptoms[j]
+            ) {
+              if (
+                !otherPossibleSymptoms.includes(
+                  test.data.gender_interaction[gender][i]
+                )
+              ) {
+                otherPossibleSymptoms +=
+                  test.data.gender_interaction[gender][i] + ' || ';
+              }
+            }
+          }
+        }
+        //console.log('other possible symptoms', otherPossibleSymptoms);
+        symptomResponseArr.push(otherPossibleSymptoms);
+        console.log('Array', symptomResponseArr);
 
-  //         // return data to calling function
-  //         res.json(symptomResponseArr);
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-  //     })
-  //     .catch(function(err) {
-  //       console.log('there is an error', err);
-  //       res.send('500 Error');
-  //     });
-}); // END INTERACTION API
 
+        // return data to calling function
+        res.json(symptomResponseArr);
+      } catch (err) {
+        console.log(err);
+      }
+    })
+    .catch(function(err) {
+      console.log('there is an error', err);
+      res.send('500 Error');
+    }); // END INTERACTION API
+});
 module.exports = router;
