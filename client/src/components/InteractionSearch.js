@@ -75,6 +75,12 @@ class InteractionSearch extends Component {
 
   handleFormSubmitInteraction = event => {
     event.preventDefault();
+    // clear any prior interaction data from state on submit
+    this.setState({
+      interactions: [],
+      drug1: '',
+      drug2: ''
+    });
     if (this.state.drug1 && this.state.drug2) {
       API.getDrugInteractions({
         drug1: this.state.drug1,
@@ -153,9 +159,7 @@ class InteractionSearch extends Component {
             </ul>
           </div>
         </div>
-        {this.state.interactions.length > 0 ? (
-          <InteractionResultsB interactions_results={this.state.interactions} />
-        ) : null}
+        <InteractionResultsB interactions_results={this.state.interactions} />
       </div>
     );
   }
