@@ -35,14 +35,14 @@ router.post('/interaction', function(req, res) {
   console.log(drugnames);
   // need to get age and sex from user table
   // This array is initialized as empty but will be filled in with the symptoms that are common to both the user's age and gender
-  
+
   let mostLikelySymptoms = '';
   let otherPossibleSymptoms = '';
   let symptomResponseArr = [];
 
-  //Initialize Keys
-  let age;
-  let gender;
+  //Initialize Keys From Form Input
+  let age = '20-29';
+  let gender = 'male';
 
   // db.UserDrug.findOne({ ???? uses id (see my mpngo crud snippets)
   // }).then(results => {
@@ -63,16 +63,16 @@ router.post('/interaction', function(req, res) {
     '/' +
     drugnames[1] +
     '/';
-  
+
   axios
     .get(queryUrl)
     .then(function(response) {
-      console.log(response.data);
+      // console.log(response.data);
       // if response object is empty we need to display 'no results'
-      res.json(response.data);
+      // res.json(response.data);
       try {
-        console.log('age is', age);
-        console.log('gender is', gender);
+        // console.log('age is', age);
+        // console.log('gender is', gender);
         test = response;
         //console.log('test is', test.data.age_interaction)
         for (var i = 0; i < test.data.age_interaction[age].length; i++) {
@@ -89,7 +89,7 @@ router.post('/interaction', function(req, res) {
             }
           }
         }
-        //console.log('most likey symptoms', mostLikelySymptoms);
+        // console.log('most likey symptoms *......*', mostLikelySymptoms);
         symptomResponseArr.push(mostLikelySymptoms);
       } catch (err) {
         console.log(err);
@@ -127,10 +127,9 @@ router.post('/interaction', function(req, res) {
             }
           }
         }
-        //console.log('other possible symptoms', otherPossibleSymptoms);
+        // console.log('other possible symptoms *......*', otherPossibleSymptoms);
         symptomResponseArr.push(otherPossibleSymptoms);
-        console.log('Array', symptomResponseArr);
-
+        console.log('symptomResponseArr is returning:', symptomResponseArr);
 
         // return data to calling function
         res.json(symptomResponseArr);
@@ -143,4 +142,5 @@ router.post('/interaction', function(req, res) {
       res.send('500 Error');
     }); // END INTERACTION API
 });
+
 module.exports = router;
