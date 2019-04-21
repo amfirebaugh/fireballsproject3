@@ -2,6 +2,9 @@ const unirest = require('unirest');
 const axios = require('axios');
 const router = require('express').Router();
 
+//  require DB
+const db = require('../models/userDrugModel');
+
 /* API CALL GET DRUG NAME */
 router.post('/getDrug', (req, res) => {
   //console.log('req query is', req.body);
@@ -32,41 +35,35 @@ router.post('/interaction', function(req, res) {
   console.log(drugnames);
   // need to get age and sex from user table
   // This array is initialized as empty but will be filled in with the symptoms that are common to both the user's age and gender
-  // var mostLikelySymptoms = '';
-  // var otherPossibleSymptoms = '';
-  // var symptomResponseArr = [];
+  
+  let mostLikelySymptoms = '';
+  let otherPossibleSymptoms = '';
+  let symptomResponseArr = [];
 
-  // HARDCODED FOR TESTING
-  var age = 45;
-  var gender = 'male';
+  //Initialize Keys
+  let age;
+  let gender;
 
-  // db.User.findAll({
-  //   // find all drugs associated with user
-  //   include: [db.Drug],
-  //   // this where points to User
-  //   where: { email: req.body.email },
-
+  // db.UserDrug.findOne({ ???? uses id (see my mpngo crud snippets)
   // }).then(results => {
 
+  //   get the age and gender from the returning object
   //   age = results[0].dataValues.age
   //   gender = results[0].dataValues.sex
 
   // });
 
   // save drug combo to db
-  // sequelize does not need to have an explicit join as does SQL.  Tested with invalid email and constraint was enforced.
-  // var drugCombo = req.body.name1 + '-' + req.body.name2 + '-' + req.body.email;
-  // console.log(drugCombo);
-  // db.Drug.create({ drugname1: req.body.name1, drugname2: req.body.name2, drugCombo, UserEmail: req.body.email });
-  // // api call to get drug interaction, return data to calling form
-  // console.log('in api interaction', req.body);
+  // mongo crud to update user's 'drugCombo' array in db
 
+  // run API for interaction
   var queryUrl =
     'https://www.ehealthme.com/api/v1/drug-interaction/' +
     drugnames[0] +
     '/' +
     drugnames[1] +
     '/';
+  
   axios
     .get(queryUrl)
     .then(function(response) {
@@ -133,6 +130,7 @@ router.post('/interaction', function(req, res) {
         //console.log('other possible symptoms', otherPossibleSymptoms);
         symptomResponseArr.push(otherPossibleSymptoms);
         console.log('Array', symptomResponseArr);
+
 
         // return data to calling function
         res.json(symptomResponseArr);
