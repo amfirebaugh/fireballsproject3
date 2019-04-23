@@ -103,8 +103,11 @@ class InteractionSearch extends Component {
 
     if (this.state.drug1 && this.state.drug2) {
       API.getDrugInteractions({
+        // send drugs aga and sex into interaction query
         drug1: this.state.drug1,
-        drug2: this.state.drug2
+        drug2: this.state.drug2,
+        age: this.state.age,
+        sex: this.state.sex
       })
         .then(res =>
           // setState includes a callback for console.log of state to see if I got the drugs
