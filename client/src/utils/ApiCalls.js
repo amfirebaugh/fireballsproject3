@@ -2,12 +2,12 @@
 import axios from 'axios';
 
 export default {
-  // getUsers
+  // createUsers
   signInUser: function(userProfile) {
     return axios.post('/auth/signInUser', userProfile);
   },
 
-  // saveUserInfo
+  // saveUserSearches to User
 
   getDrugNames: function(query) {
     console.log('query for drug name', query);

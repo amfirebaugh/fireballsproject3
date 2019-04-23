@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 // import pages
 import Home from './pages/Home';
-import Profile from './pages/Profile';
+import Dashboard from './pages/Dashboard';
 
 // auth imports and components
 import AuthContext from './Auth/AuthContext';
@@ -51,7 +51,7 @@ class App extends Component {
               render={props => <Callback auth={auth} {...props} />}
             /> */}
             <Route exact path="/" component={Home} />
-            <PrivateRoute exact path="/profile" component={Profile} />
+            <PrivateRoute exact path="/profile" component={Dashboard} />
             {/* 
             Profile is a placeholder route until we get auth ironed out 
             <Route exact path="/Profile" Component={Profile} /> 
