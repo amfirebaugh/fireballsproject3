@@ -171,15 +171,15 @@ class InteractionSearch extends Component {
               </FormBtn>
             </form>
           </div>
-          <div className="col-md-6 pl-3">
+          <div className="col-md-6 pl-2 rxBlue">
             <h4>Your Saved Searches</h4>
-            <table className="small">
+            <table className="small table">
               <tbody>
                 <tr>
-                  <th className="p-3">Drug1</th>
-                  <th className="p-3">Drug2</th>
-                  <th className="p-3">Age Range</th>
-                  <th className="p-3">Sex</th>
+                  <th className="pl-3">Drug1</th>
+                  <th className="pl-3">Drug2</th>
+                  <th className="pl-3">Age Range</th>
+                  <th className="pl-3">Sex</th>
                 </tr>
 
                 {this.state.savedSearches.map(search => {
