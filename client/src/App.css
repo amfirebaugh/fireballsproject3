@@ -72,6 +72,11 @@ body {
   z-index: 100;
 }
 
+/* bootstrap table override */
+.table {
+  color: #00485e !important;
+}
+
 /* New User Page */
 
 #questIcon,
