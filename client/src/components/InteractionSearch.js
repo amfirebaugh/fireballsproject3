@@ -114,6 +114,8 @@ class InteractionSearch extends Component {
         )
         .catch(err => console.log(err));
     }
+    // reload saved searches
+    this.loadSearches();
   };
 
   render() {
@@ -170,19 +172,29 @@ class InteractionSearch extends Component {
             </form>
           </div>
           <div className="col-md-6 pl-3">
-            <h4>Your Saved Searches </h4>
-            {this.state.savedSearches.map(search => {
-              return (
-                <SavedSearches
-                  key={search._id}
-                  drug1={search.drug1}
-                  drug2={search.drug2}
-                  age={search.age}
-                  sex={search.sex}
-                />
-              );
-            })}
-            ;
+            <h4>Your Saved Searches</h4>
+            <table className="small">
+              <tbody>
+                <tr>
+                  <th className="p-3">Drug1</th>
+                  <th className="p-3">Drug2</th>
+                  <th className="p-3">Age Range</th>
+                  <th className="p-3">Sex</th>
+                </tr>
+
+                {this.state.savedSearches.map(search => {
+                  return (
+                    <SavedSearches
+                      key={search._id}
+                      drug1={search.drug1}
+                      drug2={search.drug2}
+                      age={search.ageRange}
+                      sex={search.sex}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
         <InteractionResultsB interactions_results={this.state.interactions} />
