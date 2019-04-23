@@ -153,10 +153,6 @@ router.post('/interaction', function(req, res) {
         symptomResponseArr.push(otherPossibleSymptoms);
         console.log('symptomResponseArr is returning:', symptomResponseArr);
 
-        // call populateSaved searches
-        // need to pass the logged in users' id into function
-        populatedSaved();
-
         // return data to calling function
         res.json(symptomResponseArr);
       } catch (err) {
