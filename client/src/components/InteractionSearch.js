@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import API from '../utils/ApiCalls';
 import { Input, FormBtn, SelectGender, SelectAge } from './FormInteractions';
 import { InteractionResultsB } from '../components/InteractionResultsB';
+import { SavedSearches } from './SavedSearches';
 
 class InteractionSearch extends Component {
   //local state for now
@@ -22,7 +23,25 @@ class InteractionSearch extends Component {
     ],
     age: '',
     genderOptions: ['male', 'female'],
-    sex: ''
+    sex: '',
+    savedSearches: []
+  };
+
+  // When the component mounts, load all saved Searches for user
+  componentDidMount() {
+    // will need to pass in user _id
+    this.loadSearches();
+  }
+
+  // loads all saved searches for user
+  loadSearches = () => {
+    API.getSavedSearches()
+      .then(res =>
+        this.setState({ savedSearches: res.data }, () => {
+          console.log('loaded searches are:', this.state.savedSearches);
+        })
+      )
+      .catch(err => console.log(err));
   };
 
   handleInputSex = event => {
@@ -81,6 +100,7 @@ class InteractionSearch extends Component {
       drug1: '',
       drug2: ''
     });
+
     if (this.state.drug1 && this.state.drug2) {
       API.getDrugInteractions({
         drug1: this.state.drug1,
@@ -94,7 +114,8 @@ class InteractionSearch extends Component {
         )
         .catch(err => console.log(err));
     }
-    // I need to reset the form value submit
+    // reload saved searches
+    this.loadSearches();
   };
 
   render() {
@@ -151,12 +172,29 @@ class InteractionSearch extends Component {
             </form>
           </div>
           <div className="col-md-6 pl-3">
-            <h4 className="rxBlue">Saved Searches!</h4>
-            <ul className="rxBlue">
-              <li>Eye of Newt | Polyjuice Potion</li>
-              <li>Caffiene | More Caffiene</li>
-              <li>Mentos | Dr Pepper</li>
-            </ul>
+            <h4>Your Saved Searches</h4>
+            <table className="small">
+              <tbody>
+                <tr>
+                  <th className="p-3">Drug1</th>
+                  <th className="p-3">Drug2</th>
+                  <th className="p-3">Age Range</th>
+                  <th className="p-3">Sex</th>
+                </tr>
+
+                {this.state.savedSearches.map(search => {
+                  return (
+                    <SavedSearches
+                      key={search._id}
+                      drug1={search.drug1}
+                      drug2={search.drug2}
+                      age={search.ageRange}
+                      sex={search.sex}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
         <InteractionResultsB interactions_results={this.state.interactions} />
