@@ -7,8 +7,6 @@ export default {
     return axios.post('/auth/signInUser', userProfile);
   },
 
-  // saveUserSearches to User
-
   getDrugNames: function(query) {
     console.log('query for drug name', query);
     return axios.post('/api/getDrug', query);

@@ -7,7 +7,7 @@ import { Footer } from '../components/Footer';
 // import bootstrap from node_modules
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-class Home extends Component {
+class Home2 extends Component {
   render() {
     return (
       // Anything that needs access to the state data will need to be wrapped in the Provider Component.
@@ -28,4 +28,4 @@ class Home extends Component {
 }
 
 // export for use
-export default Home;
+export default Home2;

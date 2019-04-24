@@ -5,7 +5,7 @@ import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 // import pages
-import Home from './pages/Home';
+import Home2 from './pages/Home2';
 import Dashboard from './pages/Dashboard';
 
 // auth imports and components
@@ -50,7 +50,7 @@ class App extends Component {
               path="/callback"
               render={props => <Callback auth={auth} {...props} />}
             />
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Home2} />
             <PrivateRoute exact path="/profile" component={Dashboard} />
             {/* 
             Profile is a placeholder route until we get auth ironed out 

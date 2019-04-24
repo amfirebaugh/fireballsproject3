@@ -6,7 +6,7 @@ import InteractionSearch from '../components/InteractionSearch';
 import Results from '../components/Results';
 import { Footer } from '../components/Footer';
 
-class Profile extends Component {
+class Dashboard extends Component {
   state = {
     profile: null,
     error: ''
@@ -78,4 +78,4 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+export default Dashboard;
