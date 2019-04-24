@@ -12,8 +12,8 @@ class Home2 extends Component {
     return (
       // Anything that needs access to the state data will need to be wrapped in the Provider Component.
       <MyProvider>
-        <div>
-          <div className="container">
+        <div className="rxGrey mt-5">
+          <div className="container mt-3">
             <div className="row">
               <div className="col-md-12">
                 <WelcomeHome />
