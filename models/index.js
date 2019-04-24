@@ -1,6 +1,6 @@
 // Exporting an object containing all of our models
 
 module.exports = {
-  AppUsers: require('./AppUsers'),
+  AuthUser: require('./userModel'),
   DrugDetails: require('./DrugDetails')
 };
