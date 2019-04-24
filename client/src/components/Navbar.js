@@ -12,7 +12,7 @@ const Header = props => {
   return (
     <div>
       {/* inline style */}
-      <nav className="navbar navbar-expand-sm navbar-dark bg-primary mt-3 mb-3 p2 sticky">
+      <nav className="navbar navbar-expand-sm navbar-dark rxGold mb-3 mt-3 mb-3 p2 sticky">
         <div className="container">
           <a href="/" className="navbar-brand">
             {/* js is passed into the jsx via brackets */}
