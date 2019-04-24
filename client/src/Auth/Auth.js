@@ -28,17 +28,17 @@ export default class Auth {
     this.requestedScopes = 'openid profile email read:current_user';
     // this initializes the necessary object, with its properties, below
     this.auth0 = new auth0.WebAuth({
-      domain: process.env.REACT_APP_AUTH0_DOMAIN,
-      clientID: process.env.REACT_APP_AUTH0_CLIENTID,
-      redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL,
-      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+      domain: process.env.AUTH0_DOMAIN,
+      clientID: process.env.AUTH0_CLIENTID,
+      redirectUri: process.env.AUTH0_CALLBACK_URL,
+      audience: process.env.AUTH0_AUDIENCE,
       responseType: 'token id_token',
       scope: this.requestedScopes
     });
   }
   login = () => {
     this.auth0.authorize({
-      redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL
+      redirectUri: process.env.AUTH0_CALLBACK_URL
     });
 
     // this.history.push('/profile');
@@ -75,8 +75,8 @@ export default class Auth {
   // video 6.2 in pluralsight tutorial his logout dind't work so he added different code, but mine works for now... so this is note for reference...
   logout = () => {
     this.auth0.logout({
-      returnTo: 'http://localhost:3000/',
-      client_id: process.env.REACT_APP_AUTH0_CLIENTID
+      returnTo: 'https://interxact3.herokuapp.com/',
+      client_id: process.env.AUTH0_CLIENTID
     });
     // _accessToken = null;
     // _idToken = null;
