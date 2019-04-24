@@ -1,24 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
-  authorization: Object,
-  searches: Array
+var UserSchema = new Schema({
+  userId: {
+    type: String,
+    unique: true
+  },
+  drugInfo: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'DrugDetails'
+    }
+  ]
 });
 
-//   userId: {
-//     type: String,
-//     unique: true
-//   },
+//
 //   email: String,
 //   authorization: Object,
-//   UIInfo: [
-//     {
-//       type: Schema.Types.ObjectId,
-//       ref: 'DrugDetails'
-//     }
-//   ]
+//   UIInfo:
 
-const User = mongoose.model('User', UserSchema);
+const AuthUser = mongoose.model('AuthUser', UserSchema);
 
-module.exports = User;
+module.exports = AuthUser;

@@ -6,7 +6,7 @@ const jwksRSA = require('jwks-rsa'); // Retrieve RSA keys from a JSON Web Key se
 const checkScope = require('express-jwt-authz'); // Validate JWT scopes
 
 // db require:
-const db = require('../models/userModel');
+var db = require('../models');
 
 // function to validate our JWTS:
 const checkJwt = jwt({
@@ -35,7 +35,7 @@ router.get('/users', checkJwt, function(req, resp) {
 });
 
 router.post('/signInUser', function(req, resp) {
-  console.log('signInUser server side' + JSON.stringify(req.body));
+  console.log('signInUser server side' + req.body);
   console.log('userId is: ' + req.body.sub);
   console.log('userEmail is: ' + req.body.email);
   // var userAccount = {
@@ -43,15 +43,22 @@ router.post('/signInUser', function(req, resp) {
   //   searches: {}
   // };
   // connect to DB
-  // db.User.create(req.body)
-  //   .then(function(data) {
-  //     console.log(data);
-  //   })
-  //   .catch(function(err) {
-  //     resp.json(err);
-  //   });
+  //sub: signInUserObject[0],
+  // name: signInUserObject[1]
+  var signInUserObject = Object.values(req.body);
+  console.log(signInUserObject);
+  console.log(db.AuthUser);
+  db.AuthUser.create({
+    userID: signInUserObject.sub
+  })
+    .then(function(data) {
+      console.log(data);
+    })
+    .catch(function(err) {
+      resp.json(err);
+    });
   // DB. check for repeat emails and handle accordingly (if I want to...)
-  //resp.sendStatus(200);
+  resp.sendStatus(200);
 });
 
 module.exports = router;

@@ -48,11 +48,13 @@ export default class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
+        console.log(this.history);
         // this.history.push('/');
       } else if (err) {
-        // this.history.push('/');
         alert(`Error: ${err.error}. Check the console for further details.`);
         console.log(err);
+        console.log(this.history);
+        // this.history.push('/');
       }
     });
   };
