@@ -15,5 +15,9 @@ export default {
   getDrugInteractions: function(query) {
     console.log('query for interactions booya!', query);
     return axios.post('/api/interaction', query);
+  },
+
+  getSavedSearches: function(query) {
+    return axios.get('/api/savedSearches', query);
   }
 };

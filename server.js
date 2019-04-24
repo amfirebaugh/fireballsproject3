@@ -28,7 +28,9 @@ app.get('*', (req, res) => {
 });
 
 // mongo DB connection
-mongoose.connect('mongodb://localhost/drugRX', { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/drugRXTest', {
+  useNewUrlParser: true
+});
 
 // test connection via callback
 /* once => listen one time

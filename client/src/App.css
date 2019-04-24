@@ -62,7 +62,7 @@ body {
 }
 
 .jBorder {
-  border-bottom: solid 2px #00485e;
+  border-bottom: solid 6px #00485e;
 }
 
 .sticky {
@@ -70,6 +70,11 @@ body {
   top: 0;
   width: 100%;
   z-index: 100;
+}
+
+/* bootstrap table override */
+.table {
+  color: #00485e !important;
 }
 
 /* New User Page */
