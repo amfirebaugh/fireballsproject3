@@ -28,17 +28,17 @@ export default class Auth {
     this.requestedScopes = 'openid profile email read:current_user';
     // this initializes the necessary object, with its properties, below
     this.auth0 = new auth0.WebAuth({
-      domain: AUTH0_DOMAIN,
-      clientID: AUTH0_CLIENTID,
-      redirectUri: AUTH0_CALLBACK_URL,
-      audience: AUTH0_AUDIENCE,
+      domain: process.env.AUTH0_DOMAIN,
+      clientID: process.env.AUTH0_CLIENTID,
+      redirectUri: process.env.AUTH0_CALLBACK_URL,
+      audience: process.env.AUTH0_AUDIENCE,
       responseType: 'token id_token',
       scope: this.requestedScopes
     });
   }
   login = () => {
     this.auth0.authorize({
-      redirectUri: AUTH0_CALLBACK_URL
+      redirectUri: process.env.AUTH0_CALLBACK_URL
     });
 
     // this.history.push('/profile');
@@ -76,7 +76,7 @@ export default class Auth {
   logout = () => {
     this.auth0.logout({
       returnTo: 'https://interxact3.herokuapp.com/',
-      client_id: AUTH0_CLIENTID
+      client_id: process.env.AUTH0_CLIENTID
     });
     // _accessToken = null;
     // _idToken = null;
