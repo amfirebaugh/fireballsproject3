@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-  userId: {
+  authId: {
     type: String,
     unique: true
+  },
+  nickName: {
+    type: String,
+    unique: false
   },
   drugInfo: [
     {

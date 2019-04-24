@@ -46,10 +46,12 @@ router.post('/signInUser', function(req, resp) {
   //sub: signInUserObject[0],
   // name: signInUserObject[1]
   var signInUserObject = Object.values(req.body);
-  console.log(signInUserObject);
-  console.log(db.AuthUser);
+  console.log(req.body);
+  console.log('name is: ' + req.body.nickname);
+  // console.log(db.AuthUser);
   db.AuthUser.create({
-    userID: signInUserObject.sub
+    authId: req.body.sub,
+    nickName: req.body.nickname
   })
     .then(function(data) {
       console.log(data);
@@ -58,7 +60,7 @@ router.post('/signInUser', function(req, resp) {
       resp.json(err);
     });
   // DB. check for repeat emails and handle accordingly (if I want to...)
-  resp.sendStatus(200);
+  // resp.sendStatus(200);
 });
 
 module.exports = router;
