@@ -10,7 +10,7 @@ var UserSchema = new Schema({
     type: String,
     unique: false
   },
-  drugInfo: [
+  drugDetails: [
     {
       type: Schema.Types.ObjectId,
       ref: 'DrugDetails'

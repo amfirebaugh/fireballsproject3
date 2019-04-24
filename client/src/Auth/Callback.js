@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CallbackBanner from './CallbackBanner';
 
 export default class Callback extends Component {
   componentDidMount() {
@@ -11,8 +12,14 @@ export default class Callback extends Component {
   }
   render() {
     return (
-      <div>
-        <h1>Loading...</h1>
+      <div className="rxGrey mt-5">
+        <div className="container mt-3">
+          <div className="row">
+            <div className="col-md-12">
+              <CallbackBanner />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
