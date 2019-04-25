@@ -28,7 +28,7 @@ const Header = props => {
               {isAuthenticated() && (
                 <li className="nav-item">
                   <Link to="/profile" className="nav-link">
-                    View Dashboard
+                    Dashboard
                   </Link>
                 </li>
               )}
