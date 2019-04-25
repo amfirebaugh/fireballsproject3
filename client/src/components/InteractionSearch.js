@@ -38,10 +38,11 @@ class InteractionSearch extends Component {
     API.getSavedSearches()
       .then(res =>
         this.setState({ savedSearches: res.data }, () => {
+          // need to deal with a blank object for new users with no saved searches
           console.log('loaded searches are:', this.state.savedSearches);
         })
       )
-      .catch(err => console.log(err));
+      .catch(err => console.log('no searches returned', err));
   };
 
   handleInputSex = event => {
@@ -176,28 +177,30 @@ class InteractionSearch extends Component {
           </div>
           <div className="col-md-6 pl-2 rxBlue">
             <h4>Your Saved Searches</h4>
-            <table className="small table">
-              <tbody>
-                <tr>
-                  <th className="pl-3">Drug1</th>
-                  <th className="pl-3">Drug2</th>
-                  <th className="pl-3">Age Range</th>
-                  <th className="pl-3">Sex</th>
-                </tr>
-
-                {this.state.savedSearches.map(search => {
-                  return (
-                    <SavedSearches
-                      key={search._id}
-                      drug1={search.drug1}
-                      drug2={search.drug2}
-                      age={search.ageRange}
-                      sex={search.sex}
-                    />
-                  );
-                })}
-              </tbody>
-            </table>
+            {/* test for empty saved searched objects and only render if not empty, else error*/}
+            {this.state.savedSearches ? (
+              <table className="small table">
+                <tbody>
+                  <tr>
+                    <th className="pl-3">Drug1</th>
+                    <th className="pl-3">Drug2</th>
+                    <th className="pl-3">Age Range</th>
+                    <th className="pl-3">Sex</th>
+                  </tr>
+                  {this.state.savedSearches.map(search => {
+                    return (
+                      <SavedSearches
+                        key={search._id}
+                        drug1={search.drug1}
+                        drug2={search.drug2}
+                        age={search.ageRange}
+                        sex={search.sex}
+                      />
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : null}
           </div>
         </div>
         <InteractionResultsB interactions_results={this.state.interactions} />

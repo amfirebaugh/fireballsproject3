@@ -10,8 +10,9 @@ var db = require('../models');
 // need to capture user id and pass into function
 router.get('/savedSearches', (req, res) => {
   let userid = Object.values(req.body);
-  db.AppUsers.find({})
-    .populate('drugs')
+  db.AuthUser.find({})
+    // drugs --> drugDetails
+    .populate('drugDetails')
     .then(function(results) {
       // console.log the drug array
       console.log(results[0].drugs);
