@@ -104,6 +104,9 @@ router.post('/interaction', function(req, res) {
           }); // end update user
       } else {
         // if combo exists in DrugsDetails DB, get current user and check if combo already recorded for that user
+        console.log(
+          'drug already in DB, checking to see if current user has it recorded'
+        );
         db.AuthUser.find({ authId: sub })
           .populate('drugDetails')
           .then(function(results) {
@@ -128,7 +131,9 @@ router.post('/interaction', function(req, res) {
             console.log('current matchCount is', matchCount);
             // if matchCount still 0, update DrugsDetails for this user
             if (matchCount === 0) {
-              console.log('saving drug to user');
+              console.log(
+                'Current user does not have drug associated, saving drug to user'
+              );
               db.DrugDetails.create({
                 drug1: drugnames[0],
                 drug2: drugnames[1],
