@@ -29,13 +29,14 @@ class InteractionSearch extends Component {
 
   // When the component mounts, load all saved Searches for user
   componentDidMount() {
-    // will need to pass in user _id
+    //console.log('sub is', this.props);
     this.loadSearches();
   }
 
   // loads all saved searches for user
   loadSearches = () => {
-    API.getSavedSearches()
+    // pass in user 'sub' into loadSearches to get searches for authenticated user
+    API.getSavedSearches(this.props)
       .then(res =>
         this.setState({ savedSearches: res.data }, () => {
           // need to deal with a blank object for new users with no saved searches
@@ -102,13 +103,20 @@ class InteractionSearch extends Component {
       drug2: ''
     });
 
-    if (this.state.drug1 && this.state.drug2) {
+    // all search field are required
+    if (
+      this.state.drug1 &&
+      this.state.drug2 &&
+      this.state.age &&
+      this.state.sex
+    ) {
       API.getDrugInteractions({
-        // send drugs aga and sex into interaction query
+        // send drugs aga and sex into interaction query.  Must include users 'sub' ID
         drug1: this.state.drug1,
         drug2: this.state.drug2,
         age: this.state.age,
-        sex: this.state.sex
+        sex: this.state.sex,
+        sub: this.props.sub
       })
         .then(res =>
           // setState includes a callback for console.log of state to see if I got the drugs

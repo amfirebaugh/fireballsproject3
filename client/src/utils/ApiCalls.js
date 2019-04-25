@@ -18,6 +18,7 @@ export default {
   },
 
   getSavedSearches: function(query) {
-    return axios.get('/api/savedSearches', query);
+    // console.log('query is', query);
+    return axios.post('/api/savedSearches', query);
   }
 };
