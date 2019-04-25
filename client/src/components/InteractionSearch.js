@@ -112,8 +112,8 @@ class InteractionSearch extends Component {
     ) {
       API.getDrugInteractions({
         // send drugs aga and sex into interaction query.  Must include users 'sub' ID
-        drug1: this.state.drug1,
-        drug2: this.state.drug2,
+        drug1: this.state.drug1.toLowerCase(),
+        drug2: this.state.drug2.toLowerCase(),
         age: this.state.age,
         sex: this.state.sex,
         sub: this.props.sub
@@ -122,12 +122,12 @@ class InteractionSearch extends Component {
           // setState includes a callback for console.log of state to see if I got the drugs
           this.setState({ interactions: res.data }, () => {
             console.log('local interactions are', this.state.interactions);
+            this.loadSearches();
           })
         )
         .catch(err => console.log(err));
     }
     // reload saved searches
-    this.loadSearches();
   };
 
   render() {
