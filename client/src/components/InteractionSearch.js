@@ -168,7 +168,12 @@ class InteractionSearch extends Component {
                 ))}
               </datalist>
               <FormBtn
-                disabled={!this.state.drug1 || !this.state.drug2}
+                disabled={
+                  !this.state.drug1 ||
+                  !this.state.drug2 ||
+                  !this.state.sex ||
+                  !this.state.age
+                }
                 onClick={this.handleFormSubmitInteraction}
               >
                 Submit Interaction Search
