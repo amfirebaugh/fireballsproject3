@@ -52,7 +52,8 @@ class Dashboard extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <InteractionSearch />
+              {/* pass 'sub' value to interactionSearch as props */}
+              <InteractionSearch sub={this.state.profile.sub} />
             </div>
           </div>
         </div>

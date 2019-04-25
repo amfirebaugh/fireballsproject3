@@ -7,15 +7,15 @@ var db = require('../models');
 
 /* DB REQUEST FOR ALL SAVED SEARCHES FOR USER */
 // populate the saved searches for the signed in user
-// need to capture user id and pass into function
-router.get('/savedSearches', (req, res) => {
-  let userid = Object.values(req.body);
-  db.AuthUser.find({})
-    // drugs --> drugDetails
+// sub[0] is user's ID
+router.post('/savedSearches', (req, res) => {
+  let sub = Object.values(req.body);
+  //console.log('vls', sub[0]);
+  db.AuthUser.find({ authId: sub[0] })
     .populate('drugDetails')
     .then(function(results) {
       // console.log the drug array
-      console.log(results[0].drugs);
+      console.log('saved drug search results are', results[0].drugs);
       res.json(results[0].drugs);
     })
     .catch(err => {
@@ -25,9 +25,7 @@ router.get('/savedSearches', (req, res) => {
 
 /* API CALL GET DRUG NAME */
 router.post('/getDrug', (req, res) => {
-  //console.log('req query is', req.body);
   let drug = Object.values(req.body);
-  //console.log(test[0]);
 
   unirest
     .get(
@@ -43,7 +41,6 @@ router.post('/getDrug', (req, res) => {
       res.json(results.body.suggestions);
     });
 }); // END GET DRUG NAME
-// then(({ data: { results } }) => res.json(results))
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,29 +55,55 @@ router.post('/interaction', function(req, res) {
   drug2 --> drugnames[1]
   age --> drugnames[2]
   gender --> drugnames[3]
+  sub --> drugnames[4]
 
   */
 
   let mostLikelySymptoms = '';
   let otherPossibleSymptoms = '';
   let symptomResponseArr = [];
-
-  //Initialize Keys From Form Input
   //cannot have any spaces in 'age'
   let age = drugnames[2];
   let gender = drugnames[3];
+  let sub = drugnames[4];
 
-  // });
+  /* for the drug combo entered find user with matching 'sub' ID. */
 
-  // save drug search combo to db
-  // mongo crud to update user's 'drugCombo' array in db
-  // this needs to be conditional ...
-  // db.DrugDetails.create({
-  //   drug1: drugnames[0],
-  //   drug2: drugnames[1],
-  //   ageRange: age,
-  //   sex: gender
-  // });
+  ////// find a matching combo in the DB
+  db.DrugDetails.find({
+    drug1: drugnames[0],
+    drug2: drugnames[1],
+    ageRange: age,
+    sex: gender
+  })
+    .then(dbDrugFind => {
+      console.log('dbDrugFind is', dbDrugFind);
+      // if this combo is not in DB, enter it in DB for this user
+      if (dbDrugFind.length === 0) {
+        db.DrugDetails.create({
+          drug1: drugnames[0],
+          drug2: drugnames[1],
+          ageRange: age,
+          sex: gender
+        })
+          .then(dbDrugSaved => {
+            console.log('saved drug is', dbDrugSaved);
+            return db.AuthUser.findOneAndUpdate(
+              { authId: sub },
+              { drugDetails: dbDrugSaved._id }
+            );
+          })
+          .then(dbUser => {
+            console.log('saved to user ', dbUser);
+          })
+          .catch(err => {
+            console.log('error saving and associating drug with user', err);
+          }); // end update user
+      }
+    })
+    .catch(err => {
+      console.log('error finding drug associated with user', err);
+    }); // end find user for drug combo entered
 
   // run API for interaction
   var queryUrl =
