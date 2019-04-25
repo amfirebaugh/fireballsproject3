@@ -16,10 +16,10 @@ router.post('/savedSearches', (req, res) => {
     .then(function(results) {
       // console.log the drugDetails array
       res.json(results[0].drugDetails);
-      console.log('saved search results are', results);
+      // console.log('saved search results are', results);
     })
     .catch(err => {
-      console.log(err);
+      console.log('error loading saved search results', err);
     });
 });
 
@@ -47,7 +47,7 @@ router.post('/getDrug', (req, res) => {
 /* API CALL GET DRUG INTERACTION */
 router.post('/interaction', function(req, res) {
   let drugnames = Object.values(req.body);
-  console.log('drugnames object is ', drugnames);
+  // console.log('drugnames object is ', drugnames);
 
   /*
   drugnames array values from object method used in searches below
@@ -56,7 +56,6 @@ router.post('/interaction', function(req, res) {
   age --> drugnames[2]
   gender --> drugnames[3]
   sub --> drugnames[4]
-
   */
 
   let mostLikelySymptoms = '';
@@ -79,7 +78,6 @@ router.post('/interaction', function(req, res) {
     .then(dbDrugFind => {
       console.log('dbDrugFind is', dbDrugFind);
       // if this combo is not in DrugDetails DB at all, enter it and associate with this user
-      // record create succeeds
       if (dbDrugFind.length === 0) {
         db.DrugDetails.create({
           drug1: drugnames[0],
@@ -98,6 +96,8 @@ router.post('/interaction', function(req, res) {
           })
           .then(dbUser => {
             console.log('saved to user ', dbUser);
+            // run interaction query
+            interactionQuery();
           })
           .catch(err => {
             console.log('error saving and associating drug with user', err);
@@ -148,6 +148,8 @@ router.post('/interaction', function(req, res) {
                     { $push: { drugDetails: dbDrugSaved.id } },
                     { new: true }
                   ); // end update
+                  // run interaction query
+                  interactionQuery();
                 })
                 .catch(err => {
                   console.log(
@@ -157,6 +159,8 @@ router.post('/interaction', function(req, res) {
                 }); // end update user;
             } else {
               console.log('user already has this combo recorded');
+              // run interaction query
+              interactionQuery();
             } // end if for matchCount
           }); // end promise for drug pre-existing in db
       } // end outer else
@@ -165,88 +169,98 @@ router.post('/interaction', function(req, res) {
       console.log('error finding drug associated with user', err);
     }); // end find user for drug combo entered
 
-  // run API for interaction
-  var queryUrl =
-    'https://www.ehealthme.com/api/v1/drug-interaction/' +
-    drugnames[0] +
-    '/' +
-    drugnames[1] +
-    '/';
+  function interactionQuery() {
+    // run API for interaction
+    var queryUrl =
+      'https://www.ehealthme.com/api/v1/drug-interaction/' +
+      drugnames[0] +
+      '/' +
+      drugnames[1] +
+      '/';
 
-  axios
-    .get(queryUrl)
-    .then(function(response) {
-      // TEST SHORTCUT to send data to browser console before try loop
-      // res.json(response.data);
+    axios
+      .get(queryUrl)
+      .then(function(response) {
+        // TEST SHORTCUT to send data to browser console before try loop
+        // res.json(response.data);
 
-      try {
-        test = response;
-        for (var i = 0; i < test.data.age_interaction[age].length; i++) {
-          for (
-            var j = 0;
-            j < test.data.gender_interaction[gender].length;
-            j++
-          ) {
-            if (
-              test.data.age_interaction[age][i] ===
-              test.data.gender_interaction[gender][j]
+        try {
+          test = response;
+          for (var i = 0; i < test.data.age_interaction[age].length; i++) {
+            for (
+              var j = 0;
+              j < test.data.gender_interaction[gender].length;
+              j++
             ) {
-              mostLikelySymptoms += test.data.age_interaction[age][i] + ' || ';
-            }
-          }
-        }
-        console.log('most likey symptoms *......*', mostLikelySymptoms);
-        symptomResponseArr.push(mostLikelySymptoms);
-      } catch (err) {
-        console.log(err);
-      }
-    })
-    .then(function() {
-      try {
-        for (var i = 0; i < test.data.age_interaction[age].length; i++) {
-          for (var j = 0; j < mostLikelySymptoms.length; j++) {
-            if (test.data.age_interaction[age][i] !== mostLikelySymptoms[j]) {
               if (
-                !otherPossibleSymptoms.includes(
-                  test.data.age_interaction[age][i]
-                )
+                test.data.age_interaction[age][i] ===
+                test.data.gender_interaction[gender][j]
               ) {
-                otherPossibleSymptoms +=
+                mostLikelySymptoms +=
                   test.data.age_interaction[age][i] + ' || ';
               }
             }
           }
+          console.log('most likey symptoms *......*', mostLikelySymptoms);
+          symptomResponseArr.push(mostLikelySymptoms);
+        } catch (err) {
+          console.log('error processing query', err);
+          res.send('Error');
         }
-        for (var i = 0; i < test.data.gender_interaction[gender].length; i++) {
-          for (var j = 0; j < mostLikelySymptoms.length; j++) {
-            if (
-              test.data.gender_interaction[gender][i] !== mostLikelySymptoms[j]
-            ) {
-              if (
-                !otherPossibleSymptoms.includes(
-                  test.data.gender_interaction[gender][i]
-                )
-              ) {
-                otherPossibleSymptoms +=
-                  test.data.gender_interaction[gender][i] + ' || ';
+      })
+      .then(function() {
+        try {
+          for (var i = 0; i < test.data.age_interaction[age].length; i++) {
+            for (var j = 0; j < mostLikelySymptoms.length; j++) {
+              if (test.data.age_interaction[age][i] !== mostLikelySymptoms[j]) {
+                if (
+                  !otherPossibleSymptoms.includes(
+                    test.data.age_interaction[age][i]
+                  )
+                ) {
+                  otherPossibleSymptoms +=
+                    test.data.age_interaction[age][i] + ' || ';
+                }
               }
             }
           }
-        }
-        // console.log('other possible symptoms *......*', otherPossibleSymptoms);
-        symptomResponseArr.push(otherPossibleSymptoms);
-        console.log('symptomResponseArr is returning:', symptomResponseArr);
+          for (
+            var i = 0;
+            i < test.data.gender_interaction[gender].length;
+            i++
+          ) {
+            for (var j = 0; j < mostLikelySymptoms.length; j++) {
+              if (
+                test.data.gender_interaction[gender][i] !==
+                mostLikelySymptoms[j]
+              ) {
+                if (
+                  !otherPossibleSymptoms.includes(
+                    test.data.gender_interaction[gender][i]
+                  )
+                ) {
+                  otherPossibleSymptoms +=
+                    test.data.gender_interaction[gender][i] + ' || ';
+                }
+              }
+            }
+          }
+          // console.log('other possible symptoms *......*', otherPossibleSymptoms);
+          symptomResponseArr.push(otherPossibleSymptoms);
+          console.log('symptomResponseArr is returning:', symptomResponseArr);
 
-        // return data to calling function
-        res.json(symptomResponseArr);
-      } catch (err) {
-        console.log(err);
-      }
-    })
-    .catch(function(err) {
-      console.log('there is an error', err);
-      res.json('500');
-    }); // END INTERACTION API
-});
+          // return data to calling function
+          res.json(symptomResponseArr);
+        } catch (err) {
+          console.log(err);
+          res.send('Error');
+        }
+      })
+      .catch(function(err) {
+        console.log('there is an error', err);
+        res.json('500');
+      });
+  } // END Interaction Query Function
+}); // END INTERACTION API
 
 module.exports = router;
