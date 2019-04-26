@@ -33,7 +33,28 @@ class InteractionSearch extends Component {
     this.loadSearches();
   }
 
-  // loads all saved searches for user
+  ///// function to run searches from saved search table /////
+  searchFromTable = (drug1, drug2, age, sex) => {
+    console.log('hello test function', drug1, drug2, age, sex);
+    API.getDrugInteractions({
+      // send drugs aga and sex into interaction query.  Must include users 'sub' ID
+      drug1: drug1,
+      drug2: drug2,
+      age: age,
+      sex: sex,
+      sub: 'table'
+    })
+      .then(res =>
+        // setState includes a callback for console.log of state to see if I got the drugs
+        this.setState({ interactions: res.data }, () => {
+          console.log('local interactions are', this.state.interactions);
+          this.loadSearches();
+        })
+      )
+      .catch(err => console.log(err));
+  };
+
+  ///// loads all saved searches for user /////
   loadSearches = () => {
     // pass in user 'sub' into loadSearches to get searches for authenticated user
     API.getSavedSearches(this.props)
@@ -195,6 +216,9 @@ class InteractionSearch extends Component {
               <table className="small table">
                 <tbody>
                   <tr>
+                    <th className="pl-3">
+                      <i className="fas fa-prescription-bottle-alt" />
+                    </th>
                     <th className="pl-3">Drug1</th>
                     <th className="pl-3">Drug2</th>
                     <th className="pl-3">Age Range</th>
@@ -204,6 +228,8 @@ class InteractionSearch extends Component {
                   {this.state.savedSearches.slice(-10).map(search => {
                     return (
                       <SavedSearches
+                        // added test function here
+                        searchFromTable={this.searchFromTable}
                         key={search._id}
                         drug1={search.drug1}
                         drug2={search.drug2}

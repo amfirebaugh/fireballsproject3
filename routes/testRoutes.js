@@ -47,7 +47,6 @@ router.post('/getDrug', (req, res) => {
 /* API CALL GET DRUG INTERACTION */
 router.post('/interaction', function(req, res) {
   let drugnames = Object.values(req.body);
-  // console.log('drugnames object is ', drugnames);
 
   /*
   drugnames array values from object method used in searches below
@@ -66,116 +65,120 @@ router.post('/interaction', function(req, res) {
   let gender = drugnames[3];
   let sub = drugnames[4];
 
-  /* for the drug combo entered find user with matching 'sub' ID. */
-
   //**** PLACE DRUGS IN AN INTERMEDIATE ARRAY AND SORT DRUG NAMES ALPHABETICALLY - SEARCHES SHOULD ALWAYS BE IN SAME ORDER ****//
   let dAlpha = [];
   dAlpha.push(drugnames[0], drugnames[1]);
   dAlpha.sort().reverse();
 
-  //find a matching drug combo in the DrufDetails DB
-  db.DrugDetails.find({
-    drug1: dAlpha[0],
-    drug2: dAlpha[1],
-    ageRange: age,
-    sex: gender
-  })
-    .then(dbDrugFind => {
-      console.log('dbDrugFind is', dbDrugFind);
-      // if this combo is not in DrugDetails DB at all, enter it and associate with this user
-      if (dbDrugFind.length === 0) {
-        db.DrugDetails.create({
-          drug1: dAlpha[0],
-          drug2: dAlpha[1],
-          ageRange: age,
-          sex: gender
-        })
-          .then(dbDrugSaved => {
-            console.log('saved drug is', dbDrugSaved);
-            return db.AuthUser.findOneAndUpdate(
-              { authId: sub },
-              // update the drug array (schema) by pushing drug, else will overwrite previous entry
-              { $push: { drugDetails: dbDrugSaved.id } },
-              { new: true }
-            ); // end update
+  if (sub === 'table') {
+    // if seach comes from table, skip down to interactionQuery, no DB interaction needed
+    console.log('sub is', sub);
+    interactionQuery();
+  } else {
+    //find a matching drug combo in the DrufDetails DB
+    db.DrugDetails.find({
+      drug1: dAlpha[0],
+      drug2: dAlpha[1],
+      ageRange: age,
+      sex: gender
+    })
+      .then(dbDrugFind => {
+        console.log('dbDrugFind is', dbDrugFind);
+        // if this combo is not in DrugDetails DB at all, enter it and associate with this user
+        if (dbDrugFind.length === 0) {
+          db.DrugDetails.create({
+            drug1: dAlpha[0],
+            drug2: dAlpha[1],
+            ageRange: age,
+            sex: gender
           })
-          .then(dbUser => {
-            console.log('saved to user ', dbUser);
-            // run interaction query
-            interactionQuery();
-          })
-          .catch(err => {
-            console.log('error saving and associating drug with user', err);
-          }); // end update user
-      } else {
-        // if combo exists in DrugsDetails DB, get current user and check if combo already recorded for that user
-        console.log(
-          'drug already in DB, checking to see if current user has it recorded'
-        );
-        db.AuthUser.find({ authId: sub })
-          .populate('drugDetails')
-          .then(function(results) {
-            // results array has a single object with sub-objects
-            let idDrugs = results[0].drugDetails;
-            // set inital matchCounter
-            let matchCount = 0;
-            console.log('idDrugs are', idDrugs);
-            // loop through array of drugs and inspect each object
-            for (var i = 0; i < idDrugs.length; i++) {
-              if (
-                // all conditions must be met in each object
-                idDrugs[i].drug1 === dAlpha[0] &&
-                idDrugs[i].drug2 === dAlpha[1] &&
-                idDrugs[i].ageRange === age &&
-                idDrugs[i].sex === gender
-              ) {
-                // match found!
-                matchCount++;
-              }
-            }
-            console.log('current matchCount is', matchCount);
-            // if matchCount still 0, update DrugsDetails for this user
-            if (matchCount === 0) {
-              console.log(
-                'Current user does not have drug associated, saving drug to user'
-              );
-              db.DrugDetails.create({
-                drug1: dAlpha[0],
-                drug2: dAlpha[1],
-                ageRange: age,
-                sex: gender
-              })
-                .then(dbDrugSaved => {
-                  console.log('saved drug is', dbDrugSaved);
-                  return db.AuthUser.findOneAndUpdate(
-                    { authId: sub },
-                    // update the drug array (schema) by pushing drug, else will overwrite previous entry
-                    { $push: { drugDetails: dbDrugSaved.id } },
-                    { new: true }
-                  ); // end update
-                })
-                .then(dbUser => {
-                  console.log('saved to user ', dbUser);
-                  // run interaction query
-                  interactionQuery();
-                })
-                .catch(err => {
-                  console.log(
-                    'error updating user user with drugs for combo already in DB for another user',
-                    err
-                  );
-                }); // end update user;
-            } else {
-              console.log('user already has this combo recorded');
+            .then(dbDrugSaved => {
+              console.log('saved drug is', dbDrugSaved);
+              return db.AuthUser.findOneAndUpdate(
+                { authId: sub },
+                // update the drug array (schema) by pushing drug, else will overwrite previous entry
+                { $push: { drugDetails: dbDrugSaved.id } },
+                { new: true }
+              ); // end update
+            })
+            .then(dbUser => {
+              console.log('saved to user ', dbUser);
               // run interaction query
               interactionQuery();
-            } // end if for matchCount
-          }); // end promise for drug pre-existing in db
-      } // end outer else
-    })
-    .catch(err => {
-      console.log('error finding drug associated with user', err);
-    }); // end find user for drug combo entered
+            })
+            .catch(err => {
+              console.log('error saving and associating drug with user', err);
+            }); // end update user
+        } else {
+          // if combo exists in DrugsDetails DB, get current user and check if combo already recorded for that user
+          console.log(
+            'drug already in DB, checking to see if current user has it recorded'
+          );
+          db.AuthUser.find({ authId: sub })
+            .populate('drugDetails')
+            .then(function(results) {
+              // results array has a single object with sub-objects
+              let idDrugs = results[0].drugDetails;
+              // set inital matchCounter
+              let matchCount = 0;
+              console.log('idDrugs are', idDrugs);
+              // loop through array of drugs and inspect each object
+              for (var i = 0; i < idDrugs.length; i++) {
+                if (
+                  // all conditions must be met in each object
+                  idDrugs[i].drug1 === dAlpha[0] &&
+                  idDrugs[i].drug2 === dAlpha[1] &&
+                  idDrugs[i].ageRange === age &&
+                  idDrugs[i].sex === gender
+                ) {
+                  // match found!
+                  matchCount++;
+                }
+              }
+              console.log('current matchCount is', matchCount);
+              // if matchCount still 0, update DrugsDetails for this user
+              if (matchCount === 0) {
+                console.log(
+                  'Current user does not have drug associated, saving drug to user'
+                );
+                db.DrugDetails.create({
+                  drug1: dAlpha[0],
+                  drug2: dAlpha[1],
+                  ageRange: age,
+                  sex: gender
+                })
+                  .then(dbDrugSaved => {
+                    console.log('saved drug is', dbDrugSaved);
+                    return db.AuthUser.findOneAndUpdate(
+                      { authId: sub },
+                      // update the drug array (schema) by pushing drug, else will overwrite previous entry
+                      { $push: { drugDetails: dbDrugSaved.id } },
+                      { new: true }
+                    ); // end update
+                  })
+                  .then(dbUser => {
+                    console.log('saved to user ', dbUser);
+                    // run interaction query
+                    interactionQuery();
+                  })
+                  .catch(err => {
+                    console.log(
+                      'error updating user user with drugs for combo already in DB for another user',
+                      err
+                    );
+                  }); // end update user;
+              } else {
+                console.log('user already has this combo recorded');
+                // run interaction query
+                interactionQuery();
+              } // end if for matchCount
+            }); // end promise for drug pre-existing in db
+        } // end outer else
+      })
+      .catch(err => {
+        console.log('error finding drug associated with user', err);
+      }); // end find user for drug combo entered
+  } // end main else
 
   function interactionQuery() {
     // run API for interaction
