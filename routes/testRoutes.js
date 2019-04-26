@@ -51,8 +51,8 @@ router.post('/interaction', function(req, res) {
 
   /*
   drugnames array values from object method used in searches below
-  drug1 --> drugnames[0]
-  drug2 --> drugnames[1]
+  drug1 --> dAlpha[0]
+  drug2 --> dAlpha[1]
   age --> drugnames[2]
   gender --> drugnames[3]
   sub --> drugnames[4]
@@ -68,10 +68,15 @@ router.post('/interaction', function(req, res) {
 
   /* for the drug combo entered find user with matching 'sub' ID. */
 
-  ////// find a matching drug combo in the DrufDetails DB
+  //**** PLACE DRUGS IN AN INTERMEDIATE ARRAY AND SORT DRUG NAMES ALPHABETICALLY - SEARCHES SHOULD ALWAYS BE IN SAME ORDER ****//
+  let dAlpha = [];
+  dAlpha.push(drugnames[0], drugnames[1]);
+  dAlpha.sort();
+
+  //find a matching drug combo in the DrufDetails DB
   db.DrugDetails.find({
-    drug1: drugnames[0],
-    drug2: drugnames[1],
+    drug1: dAlpha[0],
+    drug2: dAlpha[1],
     ageRange: age,
     sex: gender
   })
@@ -80,8 +85,8 @@ router.post('/interaction', function(req, res) {
       // if this combo is not in DrugDetails DB at all, enter it and associate with this user
       if (dbDrugFind.length === 0) {
         db.DrugDetails.create({
-          drug1: drugnames[0],
-          drug2: drugnames[1],
+          drug1: dAlpha[0],
+          drug2: dAlpha[1],
           ageRange: age,
           sex: gender
         })
@@ -97,7 +102,7 @@ router.post('/interaction', function(req, res) {
           .then(dbUser => {
             console.log('saved to user ', dbUser);
             // run interaction query
-            interactionQuery();
+            // interactionQuery();
           })
           .catch(err => {
             console.log('error saving and associating drug with user', err);
@@ -119,8 +124,8 @@ router.post('/interaction', function(req, res) {
             for (var i = 0; i < idDrugs.length; i++) {
               if (
                 // all conditions must be met in each object
-                idDrugs[i].drug1 === drugnames[0] &&
-                idDrugs[i].drug2 === drugnames[1] &&
+                idDrugs[i].drug1 === dAlpha[0] &&
+                idDrugs[i].drug2 === dAlpha[1] &&
                 idDrugs[i].ageRange === age &&
                 idDrugs[i].sex === gender
               ) {
@@ -135,8 +140,8 @@ router.post('/interaction', function(req, res) {
                 'Current user does not have drug associated, saving drug to user'
               );
               db.DrugDetails.create({
-                drug1: drugnames[0],
-                drug2: drugnames[1],
+                drug1: dAlpha[0],
+                drug2: dAlpha[1],
                 ageRange: age,
                 sex: gender
               })
@@ -149,7 +154,7 @@ router.post('/interaction', function(req, res) {
                     { new: true }
                   ); // end update
                   // run interaction query
-                  interactionQuery();
+                  // interactionQuery();
                 })
                 .catch(err => {
                   console.log(
@@ -160,7 +165,7 @@ router.post('/interaction', function(req, res) {
             } else {
               console.log('user already has this combo recorded');
               // run interaction query
-              interactionQuery();
+              // interactionQuery();
             } // end if for matchCount
           }); // end promise for drug pre-existing in db
       } // end outer else
@@ -169,98 +174,92 @@ router.post('/interaction', function(req, res) {
       console.log('error finding drug associated with user', err);
     }); // end find user for drug combo entered
 
-  function interactionQuery() {
-    // run API for interaction
-    var queryUrl =
-      'https://www.ehealthme.com/api/v1/drug-interaction/' +
-      drugnames[0] +
-      '/' +
-      drugnames[1] +
-      '/';
+  //function interactionQuery() {
+  // run API for interaction
+  var queryUrl =
+    'https://www.ehealthme.com/api/v1/drug-interaction/' +
+    dAlpha[0] +
+    '/' +
+    dAlpha[1] +
+    '/';
 
-    axios
-      .get(queryUrl)
-      .then(function(response) {
-        // TEST SHORTCUT to send data to browser console before try loop
-        // res.json(response.data);
+  axios
+    .get(queryUrl)
+    .then(function(response) {
+      // TEST SHORTCUT to send data to browser console before try loop
+      // res.json(response.data);
 
-        try {
-          test = response;
-          for (var i = 0; i < test.data.age_interaction[age].length; i++) {
-            for (
-              var j = 0;
-              j < test.data.gender_interaction[gender].length;
-              j++
+      try {
+        test = response;
+        for (var i = 0; i < test.data.age_interaction[age].length; i++) {
+          for (
+            var j = 0;
+            j < test.data.gender_interaction[gender].length;
+            j++
+          ) {
+            if (
+              test.data.age_interaction[age][i] ===
+              test.data.gender_interaction[gender][j]
             ) {
+              mostLikelySymptoms += test.data.age_interaction[age][i] + ' || ';
+            }
+          }
+        }
+        console.log('most likey symptoms *......*', mostLikelySymptoms);
+        symptomResponseArr.push(mostLikelySymptoms);
+      } catch (err) {
+        console.log('error processing query', err);
+        // res.send('Error');
+      }
+    })
+    .then(function() {
+      try {
+        for (var i = 0; i < test.data.age_interaction[age].length; i++) {
+          for (var j = 0; j < mostLikelySymptoms.length; j++) {
+            if (test.data.age_interaction[age][i] !== mostLikelySymptoms[j]) {
               if (
-                test.data.age_interaction[age][i] ===
-                test.data.gender_interaction[gender][j]
+                !otherPossibleSymptoms.includes(
+                  test.data.age_interaction[age][i]
+                )
               ) {
-                mostLikelySymptoms +=
+                otherPossibleSymptoms +=
                   test.data.age_interaction[age][i] + ' || ';
               }
             }
           }
-          console.log('most likey symptoms *......*', mostLikelySymptoms);
-          symptomResponseArr.push(mostLikelySymptoms);
-        } catch (err) {
-          console.log('error processing query', err);
-          res.send('Error');
         }
-      })
-      .then(function() {
-        try {
-          for (var i = 0; i < test.data.age_interaction[age].length; i++) {
-            for (var j = 0; j < mostLikelySymptoms.length; j++) {
-              if (test.data.age_interaction[age][i] !== mostLikelySymptoms[j]) {
-                if (
-                  !otherPossibleSymptoms.includes(
-                    test.data.age_interaction[age][i]
-                  )
-                ) {
-                  otherPossibleSymptoms +=
-                    test.data.age_interaction[age][i] + ' || ';
-                }
-              }
-            }
-          }
-          for (
-            var i = 0;
-            i < test.data.gender_interaction[gender].length;
-            i++
-          ) {
-            for (var j = 0; j < mostLikelySymptoms.length; j++) {
+        for (var i = 0; i < test.data.gender_interaction[gender].length; i++) {
+          for (var j = 0; j < mostLikelySymptoms.length; j++) {
+            if (
+              test.data.gender_interaction[gender][i] !== mostLikelySymptoms[j]
+            ) {
               if (
-                test.data.gender_interaction[gender][i] !==
-                mostLikelySymptoms[j]
+                !otherPossibleSymptoms.includes(
+                  test.data.gender_interaction[gender][i]
+                )
               ) {
-                if (
-                  !otherPossibleSymptoms.includes(
-                    test.data.gender_interaction[gender][i]
-                  )
-                ) {
-                  otherPossibleSymptoms +=
-                    test.data.gender_interaction[gender][i] + ' || ';
-                }
+                otherPossibleSymptoms +=
+                  test.data.gender_interaction[gender][i] + ' || ';
               }
             }
           }
-          // console.log('other possible symptoms *......*', otherPossibleSymptoms);
-          symptomResponseArr.push(otherPossibleSymptoms);
-          console.log('symptomResponseArr is returning:', symptomResponseArr);
-
-          // return data to calling function
-          res.json(symptomResponseArr);
-        } catch (err) {
-          console.log(err);
-          res.send('Error');
         }
-      })
-      .catch(function(err) {
-        console.log('there is an error', err);
-        res.json('500');
-      });
-  } // END Interaction Query Function
+        // console.log('other possible symptoms *......*', otherPossibleSymptoms);
+        symptomResponseArr.push(otherPossibleSymptoms);
+        console.log('symptomResponseArr is returning:', symptomResponseArr);
+
+        // return data to calling function
+        res.json(symptomResponseArr);
+      } catch (err) {
+        console.log(err);
+        // res.send('Error');
+      }
+    })
+    .catch(function(err) {
+      console.log('there is an error', err);
+      res.json('500');
+    });
+  //} // END Interaction Query Function
 }); // END INTERACTION API
 
 module.exports = router;
