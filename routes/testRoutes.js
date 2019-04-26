@@ -51,8 +51,8 @@ router.post('/interaction', function(req, res) {
 
   /*
   drugnames array values from object method used in searches below
-  drug1 --> drugnames[0]
-  drug2 --> drugnames[1]
+  drug1 --> dAlpha[0]
+  drug2 --> dAlpha[1]
   age --> drugnames[2]
   gender --> drugnames[3]
   sub --> drugnames[4]
@@ -68,10 +68,15 @@ router.post('/interaction', function(req, res) {
 
   /* for the drug combo entered find user with matching 'sub' ID. */
 
-  ////// find a matching drug combo in the DrufDetails DB
+  //**** PLACE DRUGS IN AN INTERMEDIATE ARRAY AND SORT DRUG NAMES ALPHABETICALLY - SEARCHES SHOULD ALWAYS BE IN SAME ORDER ****//
+  let dAlpha = [];
+  dAlpha.push(drugnames[0], drugnames[1]);
+  dAlpha.sort().reverse();
+
+  //find a matching drug combo in the DrufDetails DB
   db.DrugDetails.find({
-    drug1: drugnames[0],
-    drug2: drugnames[1],
+    drug1: dAlpha[0],
+    drug2: dAlpha[1],
     ageRange: age,
     sex: gender
   })
@@ -80,8 +85,8 @@ router.post('/interaction', function(req, res) {
       // if this combo is not in DrugDetails DB at all, enter it and associate with this user
       if (dbDrugFind.length === 0) {
         db.DrugDetails.create({
-          drug1: drugnames[0],
-          drug2: drugnames[1],
+          drug1: dAlpha[0],
+          drug2: dAlpha[1],
           ageRange: age,
           sex: gender
         })
@@ -119,8 +124,8 @@ router.post('/interaction', function(req, res) {
             for (var i = 0; i < idDrugs.length; i++) {
               if (
                 // all conditions must be met in each object
-                idDrugs[i].drug1 === drugnames[0] &&
-                idDrugs[i].drug2 === drugnames[1] &&
+                idDrugs[i].drug1 === dAlpha[0] &&
+                idDrugs[i].drug2 === dAlpha[1] &&
                 idDrugs[i].ageRange === age &&
                 idDrugs[i].sex === gender
               ) {
@@ -135,8 +140,8 @@ router.post('/interaction', function(req, res) {
                 'Current user does not have drug associated, saving drug to user'
               );
               db.DrugDetails.create({
-                drug1: drugnames[0],
-                drug2: drugnames[1],
+                drug1: dAlpha[0],
+                drug2: dAlpha[1],
                 ageRange: age,
                 sex: gender
               })
@@ -148,6 +153,9 @@ router.post('/interaction', function(req, res) {
                     { $push: { drugDetails: dbDrugSaved.id } },
                     { new: true }
                   ); // end update
+                })
+                .then(dbUser => {
+                  console.log('saved to user ', dbUser);
                   // run interaction query
                   interactionQuery();
                 })
@@ -173,9 +181,9 @@ router.post('/interaction', function(req, res) {
     // run API for interaction
     var queryUrl =
       'https://www.ehealthme.com/api/v1/drug-interaction/' +
-      drugnames[0] +
+      dAlpha[0] +
       '/' +
-      drugnames[1] +
+      dAlpha[1] +
       '/';
 
     axios
@@ -205,7 +213,8 @@ router.post('/interaction', function(req, res) {
           symptomResponseArr.push(mostLikelySymptoms);
         } catch (err) {
           console.log('error processing query', err);
-          res.send('Error');
+          //!!! ALL EMPTY OBJECTS WILL FAIL HERE !!!////
+          resp.json('Error');
         }
       })
       .then(function() {
@@ -253,7 +262,7 @@ router.post('/interaction', function(req, res) {
           res.json(symptomResponseArr);
         } catch (err) {
           console.log(err);
-          res.send('Error');
+          // res.send('Error');
         }
       })
       .catch(function(err) {
