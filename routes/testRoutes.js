@@ -5,9 +5,11 @@ const router = require('express').Router();
 //  require DB
 var db = require('../models');
 
-/* DB REQUEST FOR ALL SAVED SEARCHES FOR USER */
-// populate the saved searches for the signed in user
-// sub[0] is user's ID
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+/* MongoDB request for saved searches associated with
+  authenticated user.  Populates the saved searches table in the UI
+  sub[0] is user's ID */
 router.post('/savedSearches', (req, res) => {
   let sub = Object.values(req.body);
   //console.log('vls', sub[0]);
@@ -23,7 +25,9 @@ router.post('/savedSearches', (req, res) => {
     });
 });
 
-/* API CALL GET DRUG NAME */
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+/* API Call to get drugnames for interaction form input */
 router.post('/getDrug', (req, res) => {
   let drug = Object.values(req.body);
 
@@ -44,7 +48,20 @@ router.post('/getDrug', (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-/* API CALL GET DRUG INTERACTION */
+/* API Call to get drug interactions */
+
+/* 
+  this route is conditional.
+  condition 1:  authId = 'table', meaning the interaction search was initiated from the saved
+                seaches table.  There is no MongoDB interaction with this execution as it works
+                off of data in the UI provided by DB query resulst on component load
+  
+  condition 2:  authId = 'sub id' from google. This interaction search is initiated by the drug search form
+                and the DB search criteria is checked agains the DB.  New searches are saved to DB.  If
+                searched was saved to the DB in a prior exercise, the DB save is skipped.
+
+*/
+
 router.post('/interaction', function(req, res) {
   let drugnames = Object.values(req.body);
 
@@ -57,24 +74,27 @@ router.post('/interaction', function(req, res) {
   sub --> drugnames[4]
   */
 
+  // data buckets for age and symptom manipulation
   let mostLikelySymptoms = '';
   let otherPossibleSymptoms = '';
   let symptomResponseArr = [];
-  //cannot have any spaces in 'age'
+  //NOTE: cannot have any spaces in 'age'
   let age = drugnames[2];
   let gender = drugnames[3];
   let sub = drugnames[4];
 
-  //**** PLACE DRUGS IN AN INTERMEDIATE ARRAY AND SORT DRUG NAMES ALPHABETICALLY - SEARCHES SHOULD ALWAYS BE IN SAME ORDER ****//
+  //**** DRUGS NAMES PLACED IN AN INTERMEDIATE ARRAY AND SORTED ALPHABETICALLY, REVERSE - SEARCHES SHOULD ALWAYS BE IN SAME ORDER ****//
   let dAlpha = [];
   dAlpha.push(drugnames[0], drugnames[1]);
   dAlpha.sort().reverse();
 
+  ///// if 'sub' refers to 'table', then search was initialted from UI saved saearches and DB interaction is skipped.
   if (sub === 'table') {
     // if seach comes from table, skip down to interactionQuery, no DB interaction needed
     console.log('sub is', sub);
     interactionQuery();
   } else {
+    ///// search intiated from input form and checked against DB, and saved to DB if necessary
     //find a matching drug combo in the DrufDetails DB
     db.DrugDetails.find({
       drug1: dAlpha[0],
@@ -261,7 +281,7 @@ router.post('/interaction', function(req, res) {
           symptomResponseArr.push(otherPossibleSymptoms);
           console.log('symptomResponseArr is returning:', symptomResponseArr);
 
-          // return data to calling function
+          // return data to calling function on FRONT END
           res.json(symptomResponseArr);
         } catch (err) {
           console.log(err);

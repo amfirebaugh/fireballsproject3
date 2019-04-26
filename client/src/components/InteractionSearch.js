@@ -5,7 +5,6 @@ import { InteractionResultsB } from '../components/InteractionResultsB';
 import { SavedSearches } from './SavedSearches';
 
 class InteractionSearch extends Component {
-  //local state for now
   state = {
     drug1: '',
     drug2: '',
@@ -33,11 +32,12 @@ class InteractionSearch extends Component {
     this.loadSearches();
   }
 
-  ///// function to run searches from saved search table /////
+  ///// function to run searches from saved search UI component /////
   searchFromTable = (drug1, drug2, age, sex) => {
     console.log('hello test function', drug1, drug2, age, sex);
     API.getDrugInteractions({
-      // send drugs aga and sex into interaction query.  Must include users 'sub' ID
+      // send drugs aga and sex into interaction query.
+      // wil not be interaction with DB so sub = 'table' and not user's authId
       drug1: drug1,
       drug2: drug2,
       age: age,
@@ -54,7 +54,7 @@ class InteractionSearch extends Component {
       .catch(err => console.log(err));
   };
 
-  ///// loads all saved searches for user /////
+  ///// loads all saved searches for user from MongoDB /////
   loadSearches = () => {
     // pass in user 'sub' into loadSearches to get searches for authenticated user
     API.getSavedSearches(this.props)
@@ -67,6 +67,7 @@ class InteractionSearch extends Component {
       .catch(err => console.log('no searches returned', err));
   };
 
+  ///// form input handler
   handleInputSex = event => {
     const { name, value } = event.target;
     this.setState({
@@ -74,6 +75,7 @@ class InteractionSearch extends Component {
     });
   };
 
+  ///// form input handler
   handleInputAge = event => {
     const { name, value } = event.target;
     this.setState({
@@ -81,6 +83,7 @@ class InteractionSearch extends Component {
     });
   };
 
+  ///// form input handler - drug suggestion1
   handleInputChangeSuggestions1 = event => {
     const { name, value } = event.target;
     this.setState({
@@ -98,6 +101,7 @@ class InteractionSearch extends Component {
     }
   };
 
+  ///// form input handler - drug suggeston2
   handleInputChangeSuggestions2 = event => {
     const { name, value } = event.target;
     this.setState({
@@ -115,6 +119,7 @@ class InteractionSearch extends Component {
     }
   };
 
+  ///// form submission action for new drug interaction search
   handleFormSubmitInteraction = event => {
     event.preventDefault();
     // clear any prior interaction data from state on submit
@@ -124,7 +129,7 @@ class InteractionSearch extends Component {
       drug2: ''
     });
 
-    // all search field are required
+    // Note: all search field are required for interaction search
     if (
       this.state.drug1 &&
       this.state.drug2 &&
@@ -132,7 +137,7 @@ class InteractionSearch extends Component {
       this.state.sex
     ) {
       API.getDrugInteractions({
-        // send drugs aga and sex into interaction query.  Must include users 'sub' ID
+        // send drugs aga and sex into interaction query.  Must include users 'sub' ID which is user's authId
         drug1: this.state.drug1.toLowerCase(),
         drug2: this.state.drug2.toLowerCase(),
         age: this.state.age,
@@ -143,12 +148,12 @@ class InteractionSearch extends Component {
           // setState includes a callback for console.log of state to see if I got the drugs
           this.setState({ interactions: res.data }, () => {
             console.log('local interactions are', this.state.interactions);
+            // reload saved searches, refresh table in UI
             this.loadSearches();
           })
         )
         .catch(err => console.log(err));
     }
-    // reload saved searches
   };
 
   render() {
