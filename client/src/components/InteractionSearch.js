@@ -134,7 +134,7 @@ class InteractionSearch extends Component {
     return (
       <div className="container jumbotron jBorder rxBlue">
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <h4 className="mb-3">Drug Interaction Search</h4>
             <form>
               <SelectGender
@@ -188,7 +188,7 @@ class InteractionSearch extends Component {
               </FormBtn>
             </form>
           </div>
-          <div className="col-md-6 pl-2 rxBlue">
+          <div className="col-md-8 pl-2 rxBlue">
             <h4>Your Saved Searches</h4>
             {/* test for empty saved searched objects and only render if not empty, else error*/}
             {this.state.savedSearches ? (
@@ -200,7 +200,8 @@ class InteractionSearch extends Component {
                     <th className="pl-3">Age Range</th>
                     <th className="pl-3">Sex</th>
                   </tr>
-                  {this.state.savedSearches.map(search => {
+                  {/* only show the last 10 results */}
+                  {this.state.savedSearches.slice(-10).map(search => {
                     return (
                       <SavedSearches
                         key={search._id}

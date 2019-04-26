@@ -16,7 +16,7 @@ router.post('/savedSearches', (req, res) => {
     .then(function(results) {
       // console.log the drugDetails array
       res.json(results[0].drugDetails);
-      // console.log('saved search results are', results);
+      console.log('saved search results are', results);
     })
     .catch(err => {
       console.log('error loading saved search results', err);
