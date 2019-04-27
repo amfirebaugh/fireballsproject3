@@ -1,6 +1,9 @@
 import React from 'react';
 // import bootstrap from node_modules
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery';
+import 'bootstrap/dist/js/bootstrap';
+import 'popper.js';
 import AuthContext from '../Auth/AuthContext';
 import { Link } from 'react-router-dom';
 import RX_icon from '../images/RX_icon.png';
@@ -9,7 +12,7 @@ import RX_icon from '../images/RX_icon.png';
 
 const Header = props => {
   // destructure (else enter: props.branding into <h3> )
-  const { branding, auth } = props;
+  const { auth } = props;
   const { isAuthenticated, logout, login } = auth;
   console.log('authed?>:::: ', isAuthenticated());
   return (
@@ -36,7 +39,7 @@ const Header = props => {
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mr-auto d-flex justify-content-end">
+            <ul className="navbar-nav mr-auto list-inline float-right">
               <li className="nav-item">
                 <Link to="/" className="nav-link">
                   Home

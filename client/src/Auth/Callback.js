@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CallbackBanner from './CallbackBanner';
+import { Footer } from '../components/Footer';
 
 export default class Callback extends Component {
   componentDidMount() {
@@ -20,6 +21,7 @@ export default class Callback extends Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

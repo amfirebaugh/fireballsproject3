@@ -52,6 +52,14 @@ body {
   border-bottom: solid 4px #00485e;
 }
 
+/* .navbar-toggler {
+  float: right;
+} */
+
+.navbar-collapse {
+  flex-grow: 0;
+}
+
 a.nav-link,
 a.navbar-brand {
   color: #e6502b;

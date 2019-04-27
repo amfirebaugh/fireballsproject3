@@ -15,7 +15,8 @@ class Home2Banner extends Component {
             </h4>
             <p className="lead">
               Check for possible side-effects and interactions between your
-              prescription medications in seconds! Login to begin.
+              prescription and over-the-counter medications in seconds! Login to
+              begin.
             </p>
           </div>
         </div>
