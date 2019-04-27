@@ -1,25 +1,45 @@
 import React from 'react';
 // import bootstrap from node_modules
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery';
+import 'bootstrap/dist/js/bootstrap';
+import 'popper.js';
 import AuthContext from '../Auth/AuthContext';
 import { Link } from 'react-router-dom';
+import RX_icon from '../images/RX_icon.png';
+
+// <ion-icon name="menu"></ion-icon>  --> hamburger icon in case bootstrap isn't playing nice
 
 const Header = props => {
   // destructure (else enter: props.branding into <h3> )
-  const { branding, auth } = props;
+  const { auth } = props;
   const { isAuthenticated, logout, login } = auth;
   console.log('authed?>:::: ', isAuthenticated());
   return (
     <div>
       {/* inline style */}
-      <nav className="navbar navbar-expand-sm navbar-dark rxGold mb-3 p-2 sticky">
+      <nav className="navbar navbar-expand-md rxStyles mb-3 p-2 sticky navBorder">
         <div className="container">
           <a href="/" className="navbar-brand">
-            {/* js is passed into the jsx via brackets */}
-            {branding}
+            <span>
+              Inte
+              <img src={RX_icon} height="20px" />
+              act
+            </span>
           </a>
-          <div>
-            <ul className="navbar-nav mr-auto">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mr-auto list-inline float-right">
               <li className="nav-item">
                 <Link to="/" className="nav-link">
                   Home
@@ -28,12 +48,15 @@ const Header = props => {
               {isAuthenticated() && (
                 <li className="nav-item">
                   <Link to="/profile" className="nav-link">
-                    View Dashboard
+                    Dashboard
                   </Link>
                 </li>
               )}
-              <li>
-                <button onClick={isAuthenticated() ? logout : login}>
+              <li className="ml-3">
+                <button
+                  className="btn rxLogBtn"
+                  onClick={isAuthenticated() ? logout : login}
+                >
                   {isAuthenticated() ? 'Logout' : 'Login'}
                 </button>
               </li>

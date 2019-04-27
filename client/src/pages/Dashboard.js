@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ApiCalls from '../utils/ApiCalls';
 import InteractionSearch from '../components/InteractionSearch';
-import WelcomeHome from '../components/WelcomeHome';
 import { Footer } from '../components/Footer';
 
 class Dashboard extends Component {
@@ -35,17 +34,22 @@ class Dashboard extends Component {
         <div className="container mt-3">
           <div className="row">
             <div className="col-md-12">
-              <WelcomeHome />
-            </div>
-          </div>
-        </div>
-        <div className="container mt-3">
-          <div className="row">
-            <div className="col-md-12">
-              <h4>
-                Placeholder for name that will go into welcome banner later:{' '}
-                {profile.name}
-              </h4>
+              <div className="container jumbotron jBorder rxBlue mt-3">
+                <div className="row">
+                  <div className="col-md-12">
+                    <h4>Welcome to Your Dashboard {profile.name}!</h4>
+                    <p>
+                      Searches require all fields below to view side effects.
+                      Your searches will automatically be saved to your private
+                      dashboard.
+                    </p>
+                    <p>
+                      Don't remember how to spell your prescription? Start
+                      typing in the first few letters and we'll help!
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

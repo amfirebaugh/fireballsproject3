@@ -1,14 +1,14 @@
 /* layout page */
 
 body {
-  color: white;
-  background-color: #fcbe05;
+  color: #00485e;
+  background-color: #e9ecef;
 }
 
-.rxFooterLinks {
+/* .rxFooterLinks {
   color: #00485e;
   padding: 0px 20px 0px 20px;
-}
+} */
 
 #footerLinkRB {
   border-right: 0.5px solid #00485e;
@@ -43,15 +43,54 @@ body {
   color: #00485e;
 }
 
-.rxGold {
+/* Navbar background color */
+.rxStyles {
+  background-color: #e9ecef;
+}
+
+.navBorder {
+  border-bottom: solid 4px #00485e;
+}
+
+/* .navbar-toggler {
+  float: right;
+} */
+
+.navbar-collapse {
+  flex-grow: 0;
+}
+
+a.nav-link,
+a.navbar-brand {
+  color: #e6502b;
+}
+
+a.nav-link:hover,
+a.navbar-brand:hover {
+  color: #00485e;
+}
+
+.rxLogBtn {
   background-color: #fcbe05;
+  color: #00485e;
+}
+
+/* Callback page things: */
+
+.vbBtn {
+  color: #00485e;
+}
+
+.vbBtn:hover {
+  color: #00485e;
 }
 
 .rxGrey {
   background-color: #00a88f;
   /* background-image: url('./images/pills.jpg'); */
-  background-size: cover;
+  /* background-size: cover; */
   background-position: center;
+  margin: 0% 2% 0% 2%;
   border-top: double 4px #00485e;
 }
 
