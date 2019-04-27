@@ -13,10 +13,10 @@ export function SavedSearches(props) {
       >
         <i className="fas fa-play-circle" />
       </td>
-      <td className="pl-3">{drug1}</td>
-      <td className="pl-3">{drug2}</td>
-      <td className="pl-3">{age}</td>
-      <td className="pl-3">{sex}</td>
+      <td className="pl-1">{drug1}</td>
+      <td className="pl-1">{drug2}</td>
+      <td className="pl-1">{age}</td>
+      <td className="pl-1">{sex}</td>
     </tr>
   );
 }
