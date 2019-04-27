@@ -38,7 +38,7 @@ class App extends Component {
         <Router>
           <div className="App">
             {/* Render Navbar */}
-            <Navbar branding="Dummy Navbar" auth={auth} />
+            <Navbar auth={auth} />
             {/* 
             set up the routes, ALL routes need to be imported at top 
             the '/' = Home and 'other routes contain '/', 

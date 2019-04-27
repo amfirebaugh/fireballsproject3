@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import { MyConsumer } from '../context';
+import RX_icon from '../images/RX_icon.png';
 
 class Home2Banner extends Component {
   render() {
@@ -8,7 +8,11 @@ class Home2Banner extends Component {
       <div className="container jumbotron jBorder rxBlue mt-3">
         <div className="row">
           <div className="col-md-12">
-            <h4>Welcome to InteRXact</h4>
+            <h4>
+              Welcome to Inte
+              <img src={RX_icon} height="22px" />
+              act
+            </h4>
             <p className="lead">
               Check for possible side-effects and interactions between your
               prescription medications in seconds! Login to begin.
