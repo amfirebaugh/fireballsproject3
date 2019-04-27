@@ -36,7 +36,9 @@ const Header = props => {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon" />
+            <span className="rxNavMenuIcon">
+              <i class="fas fa-bars" />
+            </span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto list-inline float-right">

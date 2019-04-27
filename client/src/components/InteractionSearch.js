@@ -161,27 +161,28 @@ class InteractionSearch extends Component {
       <div className="container jumbotron jBorder rxBlue">
         <div className="row">
           <div className="col-md-4">
-            <h4 className="mb-3">Drug Interaction Search</h4>
+            <h4 className="mb-3">Enter New Search:</h4>
+            <p>All fields are required.</p>
             <form>
               <SelectGender
                 value={this.state.sex}
                 handleChangeSex={this.handleInputSex}
                 name={'sex'}
-                placeholder={'select sex (required)'}
+                placeholder={'select sex'}
                 options={this.state.genderOptions}
               />
               <SelectAge
                 value={this.state.age}
                 handleChangeAge={this.handleInputAge}
                 name={'age'}
-                placeholder={'select age range (required)'}
+                placeholder={'select age range'}
                 options={this.state.ageOptions}
               />
               <Input
                 value={this.state.drug1}
                 onChange={this.handleInputChangeSuggestions1}
                 name="drug1"
-                placeholder="drug name 1 (required)"
+                placeholder="medication 1"
                 list="drugs1"
               />
               <datalist id="drugs1">
@@ -193,7 +194,7 @@ class InteractionSearch extends Component {
                 value={this.state.drug2}
                 onChange={this.handleInputChangeSuggestions2}
                 name="drug2"
-                placeholder="drug name 2 (required)"
+                placeholder="medication 2"
                 list="drugs2"
               />
               <datalist id="drugs2">
@@ -210,12 +211,13 @@ class InteractionSearch extends Component {
                 }
                 onClick={this.handleFormSubmitInteraction}
               >
-                Submit Interaction Search
+                Submit Search
               </FormBtn>
             </form>
           </div>
           <div className="col-md-8 pl-2 rxBlue">
-            <h4>Your Saved Searches</h4>
+            <h4>Your Recent Searches:</h4>
+            <p>Click the arrow to view the results of a recent search.</p>
             {/* test for empty saved searched objects and only render if not empty, else error*/}
             {this.state.savedSearches ? (
               <table className="small table">
@@ -224,8 +226,8 @@ class InteractionSearch extends Component {
                     <th className="pl-3">
                       <i className="fas fa-prescription-bottle-alt" />
                     </th>
-                    <th className="pl-3">Drug1</th>
-                    <th className="pl-3">Drug2</th>
+                    <th className="pl-3">Medication 1</th>
+                    <th className="pl-3">Medication 2</th>
                     <th className="pl-3">Age Range</th>
                     <th className="pl-3">Sex</th>
                   </tr>
