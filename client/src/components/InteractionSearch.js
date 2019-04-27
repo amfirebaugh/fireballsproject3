@@ -5,7 +5,6 @@ import { InteractionResultsB } from '../components/InteractionResultsB';
 import { SavedSearches } from './SavedSearches';
 
 class InteractionSearch extends Component {
-  //local state for now
   state = {
     drug1: '',
     drug2: '',
@@ -33,7 +32,29 @@ class InteractionSearch extends Component {
     this.loadSearches();
   }
 
-  // loads all saved searches for user
+  ///// function to run searches from saved search UI component /////
+  searchFromTable = (drug1, drug2, age, sex) => {
+    console.log('hello test function', drug1, drug2, age, sex);
+    API.getDrugInteractions({
+      // send drugs aga and sex into interaction query.
+      // wil not be interaction with DB so sub = 'table' and not user's authId
+      drug1: drug1,
+      drug2: drug2,
+      age: age,
+      sex: sex,
+      sub: 'table'
+    })
+      .then(res =>
+        // setState includes a callback for console.log of state to see if I got the drugs
+        this.setState({ interactions: res.data }, () => {
+          console.log('local interactions are', this.state.interactions);
+          this.loadSearches();
+        })
+      )
+      .catch(err => console.log(err));
+  };
+
+  ///// loads all saved searches for user from MongoDB /////
   loadSearches = () => {
     // pass in user 'sub' into loadSearches to get searches for authenticated user
     API.getSavedSearches(this.props)
@@ -46,6 +67,7 @@ class InteractionSearch extends Component {
       .catch(err => console.log('no searches returned', err));
   };
 
+  ///// form input handler
   handleInputSex = event => {
     const { name, value } = event.target;
     this.setState({
@@ -53,6 +75,7 @@ class InteractionSearch extends Component {
     });
   };
 
+  ///// form input handler
   handleInputAge = event => {
     const { name, value } = event.target;
     this.setState({
@@ -60,6 +83,7 @@ class InteractionSearch extends Component {
     });
   };
 
+  ///// form input handler - drug suggestion1
   handleInputChangeSuggestions1 = event => {
     const { name, value } = event.target;
     this.setState({
@@ -77,6 +101,7 @@ class InteractionSearch extends Component {
     }
   };
 
+  ///// form input handler - drug suggeston2
   handleInputChangeSuggestions2 = event => {
     const { name, value } = event.target;
     this.setState({
@@ -94,6 +119,7 @@ class InteractionSearch extends Component {
     }
   };
 
+  ///// form submission action for new drug interaction search
   handleFormSubmitInteraction = event => {
     event.preventDefault();
     // clear any prior interaction data from state on submit
@@ -103,7 +129,7 @@ class InteractionSearch extends Component {
       drug2: ''
     });
 
-    // all search field are required
+    // Note: all search field are required for interaction search
     if (
       this.state.drug1 &&
       this.state.drug2 &&
@@ -111,7 +137,7 @@ class InteractionSearch extends Component {
       this.state.sex
     ) {
       API.getDrugInteractions({
-        // send drugs aga and sex into interaction query.  Must include users 'sub' ID
+        // send drugs aga and sex into interaction query.  Must include users 'sub' ID which is user's authId
         drug1: this.state.drug1.toLowerCase(),
         drug2: this.state.drug2.toLowerCase(),
         age: this.state.age,
@@ -122,19 +148,19 @@ class InteractionSearch extends Component {
           // setState includes a callback for console.log of state to see if I got the drugs
           this.setState({ interactions: res.data }, () => {
             console.log('local interactions are', this.state.interactions);
+            // reload saved searches, refresh table in UI
             this.loadSearches();
           })
         )
         .catch(err => console.log(err));
     }
-    // reload saved searches
   };
 
   render() {
     return (
       <div className="container jumbotron jBorder rxBlue">
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <h4 className="mb-3">Drug Interaction Search</h4>
             <form>
               <SelectGender
@@ -188,21 +214,27 @@ class InteractionSearch extends Component {
               </FormBtn>
             </form>
           </div>
-          <div className="col-md-6 pl-2 rxBlue">
+          <div className="col-md-8 pl-2 rxBlue">
             <h4>Your Saved Searches</h4>
             {/* test for empty saved searched objects and only render if not empty, else error*/}
             {this.state.savedSearches ? (
               <table className="small table">
                 <tbody>
                   <tr>
+                    <th className="pl-3">
+                      <i className="fas fa-prescription-bottle-alt" />
+                    </th>
                     <th className="pl-3">Drug1</th>
                     <th className="pl-3">Drug2</th>
                     <th className="pl-3">Age Range</th>
                     <th className="pl-3">Sex</th>
                   </tr>
-                  {this.state.savedSearches.map(search => {
+                  {/* only show the last 10 results */}
+                  {this.state.savedSearches.slice(-10).map(search => {
                     return (
                       <SavedSearches
+                        // added test function here
+                        searchFromTable={this.searchFromTable}
                         key={search._id}
                         drug1={search.drug1}
                         drug2={search.drug2}
