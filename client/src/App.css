@@ -56,6 +56,10 @@ body {
   float: right;
 } */
 
+.rxNavMenuIcon {
+  color: #00485e;
+}
+
 .navbar-collapse {
   flex-grow: 0;
 }
@@ -128,6 +132,12 @@ a.navbar-brand:hover {
 .form-row {
   margin-right: 0px;
   margin-left: 0px;
+}
+
+.rxGold {
+  background-color: #fcbe05;
+  text-decoration: none;
+  color: #00485e;
 }
 
 #rxHR {

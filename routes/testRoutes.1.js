@@ -75,7 +75,7 @@ router.post('/interaction', function(req, res) {
   */
 
   // data buckets for age and symptom manipulation
-  let mostLikelySymptoms = '';
+  let mostLikelySymptoms = [];
   let otherPossibleSymptoms = '';
   let symptomResponseArr = [];
   //NOTE: cannot have any spaces in 'age'
@@ -227,11 +227,22 @@ router.post('/interaction', function(req, res) {
                 test.data.age_interaction[age][i] ===
                 test.data.gender_interaction[gender][j]
               ) {
-                mostLikelySymptoms += test.data.age_interaction[age][i] + ',  ';
+                mostLikelySymptoms.push(test.data.age_interaction[age][i]);
               }
             }
           }
-          console.log('most likey symptoms *......*', mostLikelySymptoms);
+          console.log('results length: ' + mostLikelySymptoms.length);
+          console.log('first result: ' + mostLikelySymptoms[0]);
+          console.log('results length / 4: ' + mostLikelySymptoms.length / 4);
+          console.log(
+            'results length / 4 ROUNDED: ' +
+              Math.floor(mostLikelySymptoms.length / 4)
+          );
+          console.log(
+            'results length / 4 + 1: ' +
+              Math.floor(mostLikelySymptoms.length / 4 + 1)
+          );
+          // console.log('most likey symptoms *......*', mostLikelySymptoms);
           symptomResponseArr.push(mostLikelySymptoms);
         } catch (err) {
           console.log('error processing query', err);
