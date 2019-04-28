@@ -30,14 +30,14 @@ class Dashboard extends Component {
       return null;
     }
     return (
-      <div className="rxGrey mt-5">
+      <div className="rxGrey mt-5 py-3">
         <div className="container mt-3">
           <div className="row">
             <div className="col-md-12">
               <div className="container jumbotron jBorder rxBlue mt-3">
                 <div className="row">
                   <div className="col-md-12">
-                    <h4>Welcome to Your Dashboard {profile.name}!</h4>
+                    <h4>Welcome to Your Dashboard, {profile.nickname}!</h4>
                     <p>
                       Searches require all fields below to view side effects.
                       Your searches will automatically be saved to your private

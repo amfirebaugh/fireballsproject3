@@ -26,11 +26,15 @@ class CallbackBanner extends Component {
               substitute for the consultation, diagnosis, and/or medical
               treatment of a qualified physician or healthcare provider.
             </p>
-            <a className="btn btn-warning float-right" role="button">
-              <Link className="vbBtn" to="/profile">
-                View Dashboard
-              </Link>
-            </a>
+            {/* <a className="" > */}
+            <Link
+              className="vbBtn btn btn-warning float-right"
+              role="button"
+              to="/profile"
+            >
+              View Dashboard
+            </Link>
+            {/* </a> */}
           </div>
         </div>
       </div>
