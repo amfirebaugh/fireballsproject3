@@ -226,10 +226,10 @@ class InteractionSearch extends Component {
                     <th className="pl-3">
                       <i className="fas fa-prescription-bottle-alt" />
                     </th>
-                    <th className="pl-3">Medication 1</th>
-                    <th className="pl-3">Medication 2</th>
-                    <th className="pl-3">Age Range</th>
-                    <th className="pl-3">Sex</th>
+                    <th className="pl-1">Medication 1</th>
+                    <th className="pl-1">Medication 2</th>
+                    <th className="pl-1">Age Range</th>
+                    <th className="pl-1">Sex</th>
                   </tr>
                   {/* only show the last 10 results */}
                   {this.state.savedSearches.slice(-10).map(search => {
