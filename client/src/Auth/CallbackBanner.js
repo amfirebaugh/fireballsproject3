@@ -10,7 +10,7 @@ class CallbackBanner extends Component {
           <div className="col-md-12">
             <h4>
               Welcome inside Inte
-              <img src={RX_icon} height="22px" />
+              <img src={RX_icon} alt="RX" height="22px" />
               act! Please take a moment to read the statements below.
             </h4>
             <br />

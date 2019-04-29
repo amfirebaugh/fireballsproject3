@@ -1,6 +1,6 @@
 // this allows us access to all the auth0 API's and methods
 import auth0 from 'auth0-js';
-import ApiCalls from '../utils/ApiCalls';
+// import ApiCalls from '../utils/ApiCalls';
 // varialbes used for storing session in memory
 // eslint-disable-next-line
 let _idToken = null;
@@ -48,12 +48,12 @@ export default class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
-        console.log(this.history);
+        // console.log(this.history);
         // this.history.push('/');
       } else if (err) {
         alert(`Error: ${err.error}. Check the console for further details.`);
         console.log(err);
-        console.log(this.history);
+        // console.log(this.history);
         // this.history.push('/');
       }
     });

@@ -14,7 +14,7 @@ const Header = props => {
   // destructure (else enter: props.branding into <h3> )
   const { auth } = props;
   const { isAuthenticated, logout, login } = auth;
-  console.log('authed?>:::: ', isAuthenticated());
+  // console.log('authed?>:::: ', isAuthenticated());
   return (
     <div>
       {/* inline style */}
@@ -23,7 +23,7 @@ const Header = props => {
           <a href="/" className="navbar-brand">
             <span>
               Inte
-              <img src={RX_icon} height="20px" />
+              <img src={RX_icon} alt="RX" height="20px" />
               act
             </span>
           </a>
