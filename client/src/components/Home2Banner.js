@@ -10,7 +10,7 @@ class Home2Banner extends Component {
           <div className="col-md-12">
             <h4>
               Welcome to Inte
-              <img src={RX_icon} height="22px" />
+              <img src={RX_icon} alt="RX" height="22px" />
               act
             </h4>
             <p className="lead">
