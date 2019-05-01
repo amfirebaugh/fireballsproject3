@@ -9,3 +9,11 @@ Note: If you have seen the repo fireballsProject2 then this is a complete rebuil
 ## Technnologies:
 
 React.js, MongoDB, Express.js, Node.js, Auth0, CSS (Bootstrap)
+
+## Home Page Pre-Login:
+
+![Home Page](./home_screenshot.JPG)
+
+## Dashboard Page Available Post-Login:
+
+![Dashboard Page](./dashboard_screenshot.JPG)
